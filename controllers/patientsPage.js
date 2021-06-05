@@ -7,7 +7,7 @@ module.exports = {
         try {
             const patient = await Patient.findById(req.params.id)
             const userN = await User.findById(patient.userId)
-                // console.log(userN)
+            // console.log(userN)
             res.render('patientsPage.ejs', { patients: patient, moment: moment, user: req.user, creator: userN })
         } catch (err) { console.log(err) }
     }

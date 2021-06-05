@@ -112,7 +112,10 @@
                                         <%= patients.docDrops %>
                                     </h5>
                                     <h5 class="card-title">
-                                        <img src="<%= patients.image%>">
+                                        <% patients.image.forEach( img => { %>
+                                            <img src="<%= img %>" width='300' style='border: 5px solid rgb(189, 45, 45)'>
+                                        <% }) %>
+                                        
 
                                     </h5>
                                 </div>
