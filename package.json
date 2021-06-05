@@ -1,0 +1,49 @@
+{
+    "name": "doclogapp",
+    "version": "1.0.0",
+    "description": "details of your doctorvisits",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js",
+        "scss": "node-sass --watch scss -o css"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/meera-ramesh19/docvisitapp.git"
+    },
+    "keywords": [
+        "doctor",
+        "patient",
+        "user"
+    ],
+    "author": "Meera Ramesh",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/meera-ramesh19/docvisitapp/issues"
+    },
+    "homepage": "https://github.com/meera-ramesh19/docvisitapp#readme",
+    "dependencies": {
+        "bcrypt": "^5.0.1",
+        "cloudinary": "^1.25.1",
+        "connect-mongo": "^3.2.0",
+        "cors": "^2.8.5",
+        "dotenv": "^10.0.0",
+        "ejs": "^3.1.6",
+        "express": "^4.17.1",
+        "express-flash": "0.0.2",
+        "express-session": "^1.17.2",
+        "logger": "0.0.1",
+        "method-override": "^3.0.0",
+        "moment": "^2.29.1",
+        "mongodb": "^3.6.9",
+        "mongoose": "^5.12.11",
+        "morgan": "^1.10.0",
+        "multer": "^1.4.2",
+        "node-sass": "^6.0.0",
+        "passport": "^0.4.1",
+        "passport-local": "^1.0.0",
+        "serve-favicon": "^2.5.0",
+        "validator": "^13.6.0"
+    }
+}

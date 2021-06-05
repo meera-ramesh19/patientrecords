@@ -1,0 +1,136 @@
+<%- include('partials/header') -%>
+    <%- include('partials/navbar') -%>
+
+        <body>
+            <div class="container justify-content-center">
+                <div class="text-center">
+                    <a class="btn btn-primary" href="/patients">New Patient</a>
+                    <a class="btn btn-primary" href="/feed">Return to Feed</a>
+                </div>
+            </div>
+            <%
+        const relativeTime = function(postedTime) {
+            if (!postedTime) {
+                return ''
+            }
+        const currentTime = Date.now()
+        const timeDiff = currentTime - postedTime
+        const seconds = timeDiff / 1000
+        const minutes = seconds / 60
+        const hours = minutes / 60
+        const days = hours / 24 
+        let s = ''
+        if (seconds < 60){
+            if(Math.floor(seconds)>1){
+                s = 's'
+            }
+            return Math.floor(seconds) + ' second' + s + ' ago'
+        } else if (minutes < 60) {
+            if (Math.floor(minutes)> 1){
+                s= 's'
+            }
+            return Math.floor(minutes) + ' minute' + s + ' ago'
+        } else if (hours < 24){
+            if ( Math.floor(hours) > 1 ){
+                s = 's'
+            }
+                return Math.floor(hours) + ' hour' + s + ' ago'
+            } else {
+                if(Math.floor(days)>1){
+                    s = 's'
+                }
+                return Math.floor(days) +' day' + s + ' ago'
+            }
+        }
+        %>
+
+
+                <div class="container">
+
+                    <div class="card" style="max:width:640px">
+                        <div class="card-header text-center">
+                            <h5 class="card-title">
+                                <%= patients.postTitle %>
+                            </h5>
+                            <h5 class="card-title">
+                                <%= patients.user.patName %>
+                            </h5>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="card-body text-center">
+                                <p class="card-text">Patient Name:
+                                    <%= patients.patName %>
+                                </p>
+                                <p class="card-text">Visit Date:
+                                    <%= moment(patients.docVisitDate).format( 'DD MMM YYYY'); %>
+                                </p>
+                                <p class="card-text">Posted on:
+                                    <%= moment(patients.postDate).format( 'DD MMM YYYY') %>
+                                </p>
+
+                            </div>
+                            <div class="row  justify-content-evenly">
+                                <div class="col-5">
+                                    <h5 class="card-title">
+                                        <%= patients.docName %>
+                                    </h5>
+                                    <h5 class="card-title">
+                                        <%= moment(patients.docVisitDate).format( 'DD MMM YYYY');  %>
+                                    </h5>
+                                    <h5 class="card-title">
+                                        <%= patients.docGender %>
+                                    </h5>
+                                    <h5 class="card-title">
+                                        <%= patients.docInNetwork %>
+                                    </h5>
+                                    <h5 class="card-title">
+                                        <%= patients.address %>
+                                    </h5>
+                                    <h5 class="card-title">
+                                        <%= patients.docSpecialize %>
+                                    </h5>
+                                    <h5 class="card-title">
+                                        <%= patients.patAilment %>
+                                    </h5>
+
+                                </div>
+                                <div class="col-3">
+                                    <h5 class="card-title">
+                                        <%= patients.patComment %>
+                                    </h5>
+                                    <h5 class="card-title">
+                                        <%= patients.docInstructions %>
+                                    </h5>
+                                    <h5 class="card-title">
+                                        <%= patients.docPills %>
+                                    </h5>
+                                    <h5 class="card-title">
+                                        <%= patients.docCream %>
+                                    </h5>
+                                    <h5 class="card-title">
+                                        <%= patients.docDrops %>
+                                    </h5>
+                                    <h5 class="card-title">
+                                        <img src="<%= patients.image%>">
+
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+
+                                <a href=" <%=`/patients/updatePatient/${patients.id}` %>" class=" btn btn-primary fa fa-edit ">Update</a>
+                                <a href=" " class="btn btn-primary fa fa-trash ">Delete</a>
+
+                            </div>
+                        </div>
+                        <div class="card-footer text-muted ">
+                            <h6 class="post-time text-center ">
+                                <!-- <%=relativeTime(patients.postDate)%> -->
+                                <%= moment(patients.postDate, "YYYYMMDD").fromNow()%>
+                            </h6>
+
+                        </div>
+                    </div>
+                    <%- include('partials/footer') -%>
+        </body>

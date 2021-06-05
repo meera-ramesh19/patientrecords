@@ -1,0 +1,41 @@
+rimary Care
+Primary Care Physicians
+General, Family Practice
+Internal Medicine
+Pediatric
+Obstetrics, Gynecology (OB/GYN)
+Specialties
+Allergies, Immunology, Rheumatology, Pulmonary
+Alternative Health
+Cardiovascular, Hematology
+Dental
+Dermatology
+Digestive
+Ear, Nose, Throat
+Endocrinology, Diabetes, Metabolism
+Maternity, Obstetrics, Gynecology
+Mental Health
+Neurology
+Optometry, Ophthalmology
+Physical Medicine, Podiatry, Orthopedics
+Other Specialists
+Pediatric Specialists
+Surgical
+Urinary
+
+get patients email and phonenumber
+
+nodejs  positionstack api
+
+const axios = require('axios');
+const params = {
+  access_key: 'YOUR_ACCESS_KEY',
+  query: '1600 Pennsylvania Ave NW'
+}
+
+axios.get('https://api.positionstack.com/v1/forward', {params})
+  .then(response => {
+    console.log(response.data);
+  }).catch(error => {
+    console.log(error);
+  });

@@ -1,0 +1,373 @@
+<%- include('partials/header') -%>
+
+
+
+    <div class="container">
+        <div class="userinfo">
+            <p><strong>User Name</strong>:
+                <%= user.userName %>
+            </p>
+            <p><strong>Email</strong>:
+                <%= user.email %>
+            </p>
+            <div class="user-btn">
+                <a href="/logout" class="btn btn-primary">Logout</a>
+                <a href="/feed" class="btn btn-primary">Return to Feed</a>
+            </div>
+        </div>
+
+
+        <div class="container-fluid">
+            <% if (locals.messages.errors) { %>
+                <% messages.errors.forEach( el => { %>
+                    <div class="alert alert-danger">
+                        <%= el.msg %>
+                    </div>
+                    <% }) %>
+                        <% } %>
+                            <% if (locals.messages.info) { %>
+                                <% messages.info.forEach( el => { %>
+                                    <div class="alert alert-danger">
+                                        <%= el.msg %>
+                                    </div>
+                                    <% }) %>
+                                        <% } %>
+        </div>
+        <h2>Add a post</h2>
+        <!-- <output class="notification " aria-live="polite "></output> -->
+        <!--  <form class="submissionform form-label row g-2 needs-validation ">-->
+        <form class="createform form-label container-overflow-hidden needs-validation" id="add-patient-form" action="/patients/createPatient" method="POST" enctype="multipart/form-data">
+            <div class="row g-2">
+
+                <div class="col31 col-6">
+                    <label for="validation31" class="form-label">Post Title:
+   <input class="form-control" type="text"  id="validation31" placeholder="Enter Post Title" name="postTitle" required>
+           
+         </label>
+                    <div class="invalid-feedback"> Please enter your Name </div>
+
+                </div>
+                <div class="col1 col-6">
+                    <label for="validation01" class="form-label">Patient Name:
+          <input type="text" class="form-control" id="validation01" placeholder="Enter your name" name="patName" required>
+        </label>
+                    <div class="invalid-feedback"> Please enter your Name </div>
+
+                </div>
+
+                <div class="col2 col-6">
+                    <label for="validation02" class="form-label">Patient DateofBirth:
+          <input type="date" placeholder="Enter your birthdate" name="patDob" class="form-control" id="validation02" required>
+        </label>
+                    <div class="invalid-feedback "> Please enter your DateofBirth</div>
+
+                </div>
+                <div class="col32 col-6">
+                    <label for="validation32" class="form-label">Phone Number:
+   <input class="form-control" type="number"  id="validation32" placeholder="Enter Post Title" name="postTitle" required>
+           
+         </label>
+                    <div class="invalid-feedback"> Please enter your Name </div>
+
+                </div>
+                <div class="col28 col-6">
+                    <label for="validation28" class="form-label">Patient Ailment:
+                        <input type="text" placeholder="Enter your Ailment" name="patAilment" class="form-control" id="validation28" required>
+                    </label>
+
+                    <div class="invalid-feedback"> Please enter your Ailment</div>
+                </div>
+
+
+                <div class="col3 col-6">
+                    <label for="validation03" class="form-label">Doctor Office Name:
+          <input type="text" placeholder="Doctor officename" name="docPracticeName" class="form-control" id="validation03" required>
+        </label>
+                    <div class="invalid-feedback"> Please enter Doctor Office Name </div>
+                </div>
+
+                <div class="col4 col-6">
+                    <label for="validation04" class="form-label">Doctor Name:
+                    <input type="text" placeholder="Doctor name" name="docName" class="form-control" id="validation04" required>
+                    </label>
+                    <div class="invalid-feedback"> Please enter DoctorName </div>
+                </div>
+
+                <div class="col5 col-6">
+                    <label for="validation05" class="form-label">Doctor Gender:
+          <select name="docGender" class="form-select" id="validation05" required>
+            <option value="Select an option" selected="disabled">Select an option</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </label>
+                    <div class="invalid-feedback"> Please enter DoctorGender </div>
+
+                </div>
+
+                <h4>Doctor Address:</h4>
+
+                <div class="col6 col-6">
+                    <label for="validation06" class="form-label">Doctor Street:
+                    <input type="text" name="address" class="form-select" id="validation06" required>
+                  </label>
+                    <div class="invalid-feedback"> Please enter street name</div>
+
+                </div>
+                <!-- 
+                <div class="col7 col-6">
+                    <label for="validation07" class="form-label">City:
+                    <input  type="text" name="docAddress[docCity]" class="form-select" id="validation07" required>
+                 </label>
+                    <div class="invalid-feedback"> Please enter street name</div>
+
+                </div>
+
+                <div class="col8 col-6">
+                    <label for="validation08" class="form-label">State:
+                    <input  type="text" name="docAddress[docState]" class="form-select" id="validation08" required>
+                 </label>
+                    <div class="invalid-feedback"> Please enter state name</div>
+
+                </div>
+
+                <div class="col9 col-6">
+                    <label for="validation09" class="form-label">Country :
+                    <input  type="text" name="docAddress[docCountry]" class="form-select" id="validation09" required>
+                 </label>
+                    <div class="invalid-feedback"> Please enter Country name</div>
+
+                </div>
+
+                <div class="col10 col-6">
+                    <label for="validation10" class="form-label">Pincode:
+                    <input type="text" name="docAddress[docPincode]" class="form-select" id="validation10" required>
+                 </label>
+                    <div class="invalid-feedback"> Please enter pincode</div>
+
+                </div> -->
+
+
+                <div class="col11 col-6">
+                    <label for="validation11" class="form-label">Doctor Specialization:
+          <select name="docSpecialize" class="form-select" id="validation11" required>
+            <option value="Select an option" selected="disabled">Select an option</option>
+            <option value="primary">Primary</option>
+            <option value="eye">Eye</option>
+            <option value="ent">Ent</option>
+            <option value="foot">Podiatrist</option>
+            <option value="gastro">Gastroenteritis</option>
+            <option value="cardio">Cardiologist</option>
+            <option value="gynecology">Gynecology</option>
+            <option value="orthopedic">Orthopedic</option>
+            <option value="endocrine">Endocrinology</option>
+            <option value="other">Other</option>
+          </select> </label>
+                    <div class="invalid-feedback"> Please enter specialization</div>
+                </div>
+
+                <div class="col12 col-6">
+                    <label for="validation12" class="form-label">Doctor Visit Date:
+                    <input type="date" placeholder="Appointment Date" name="docVisitDate" class="form-control" id="validation12" required>
+                 </label>
+                    <div class="invalid-feedback"> Please enter DoctorVisit Date</div>
+
+                </div>
+
+                <div class="col13 col-6">
+                    <label for="validation13" class="form-label">Doctor In Network:
+          <select name="docInNetwork" class="form-select" id="validation13">
+            <option value="Select an option" selected="disabled">Select an option</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select></label>
+                    <div class="invalid-feedback"> Please enter if Doctor InNetwork</div>
+                </div>
+
+                <div class="col14 col-6">
+                    <label for="validation14" class="form-label">Doctor Copay:
+                    <input type="number" placeholder="Copay" name="docCopay" value="10" min="10" max="1000" class="form-control" id="validation14" required>
+                     </label>
+                    <div class="invalid-feedback"> Please enter DoctorCopay</div>
+
+                </div>
+
+                <!-- <div class="col15 col-6">
+                    <label for="validation11" for="validation15" class="form-label">Patient Reviews of Doctor:
+                    <input type="number" class="form-control" id="validation15" name="patReviews" min="1" max="5" required>
+                                </label>
+                    <div class="invalid-feedback"> Please enter Doctor Reveiw</div>
+                </div> -->
+
+                <div class="col16 col-6">
+                    <label for="validation16" class="form-label">Doctor Instructions:
+          <textarea type="text" name="docInstructions" class="form-control" id="validation16" required></textarea>
+          <!-- <input type="text " name="docInstructions " class="form-control " id="validation12 " required> -->
+                </label>
+                    <div class="invalid-feedback"> Please enter Doctor Instructions</div>
+
+                </div>
+
+                <div class="col17 col-6">
+                    <label for="validation17" class="form-label">Doctor Followup:
+
+          <select name="docFollowup" class="form-select" id="validation17" value="docFollowUp" onchange="toggle('hideValue', this)" required>
+            <option value="Select an option" selected="disabled">Select an option</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select></label>
+                    <div class="invalid-feedback"> Follow up required?</div>
+                </div>
+
+                <div class="col18 col-6" id="hideValue" style="visibility:hidden;">
+                    <label for="validation18" class="form-label">Doctor FollowupDate:
+                    <input type="date" name="docFollowupDate" class="form-control" id="validation18">
+                                                            
+                </label>
+
+
+                </div>
+
+                <div class="col19 col-6 ">
+                    <label for="valdiation19 " class="form-label ">Pill Name:
+                        <input type="text " name="docPills " class="form-control " id="validation19 ">
+                                    
+                    </label>
+                </div>
+
+                <div class="col20 col-6 ">
+                    <label for="validation20 " class="form-label ">Cream Name:
+                    <input type="text " name="docCream " class="form-control " id="validation20 ">
+                                  </label>
+                </div>
+
+
+                <div class="col21 col-6 ">
+                    <label for="validations21 " class="form-label ">Drops Name:
+                  <input type="text " name="docDrops " class="form-control " id="validation21 ">
+                                      </label>
+                </div>
+
+
+                <div class="col22  col-6">
+                    <label for="validation22" class="form-label">Patient PharmacyName:
+              <input type="text" placeholder="Enter your pharmacyName" name="patPharmacyName" class="form-control " id="validation22" required>
+                             </label>
+                    <div class="invalid-feedback"> Please enter your Pharmacy Name
+                    </div>
+                </div>
+
+
+                <h4>Patient Pharmacy Address:</h4>
+                <div class="col23 col-6 ">
+                    <label for="validation23 " class="form-label ">Pharmacy Street Name:
+                    <input  type="text " name="patDocAdd" class="form-select " id="validation23 " required>
+                 <div class="invalid-feedback "> Please enter street name</div>
+                       </label>
+                </div>
+                <!-- 
+                <div class="col24 col-6 ">
+                    <label for="validation24 " class="form-label "> Pharmacy City:
+                    <input  type="text " name="patPharmacyAdd[phcity]" class="form-select " id="validation24 " required>
+                </label>
+                    <div class="invalid-feedback "> Please enter street name</div>
+
+                </div>
+
+                <div class="col25 col-6 ">
+                    <label for="validation25 " class="form-label "> Pharmacy State:
+                     <input  type="text " name="patPharmacyAdd[phstate]" class="form-select " id="validation25 " required>
+                 </label>
+                    <div class="invalid-feedback "> Please enter state name</div>
+
+                </div>
+
+                <div class="col26 col-6 ">
+                    <label for="validation26 " class="form-label "> Pharmacy Country:
+                        <input  type="text " name="patPharmacyAdd[phcountry]" class="form-select " id="validation26 " required>
+                         </label>
+                    <div class="invalid-feedback "> Please enter Country name</div>
+
+
+
+                </div>
+                <div class="col27 col-6 ">
+                    <label for="validation27 " class="form-label "> Pharmacy Pincode:
+                        <input  type="text " name="patPharmacyAdd[phpincode]" class="form-select " id="validation27 " required>
+                        </label>
+                    <div class="invalid-feedback "> Please enter pincode</div>
+                </div> -->
+
+
+
+
+                <div class="col29 col-6 ">
+                    <label for="validation29 " class="form-label ">Patient Comments:
+                     <textarea type="text " placeholder="Enter your Comments " name="patComments " class="form-control " id="validation29 " max-length="300 " required></textarea>
+     
+                </label>
+                    <div class="invalid-feedback "> Please enter your Comments</div>
+
+                </div>
+
+                <div class="fileUpload col-30 col-6">
+                    <label for="validations30" class="form-label">fileUpload:
+                        <input type="file" name="multi-files" accept="/image/*" class="form-control" id="validation30" multiple>
+
+                    </label>
+                </div>
+
+                <button type="submit " class="btn btn-primary mt-5 " value="Upload ">Submit</button>
+            </div>
+        </form>
+    </div>
+
+
+
+    <div class="container" id="feedContainer">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+            <% patient.reverse().forEach( el => { %>
+                <div class="col-sm-12 mb-5">
+                    <div class="card mx-auto">
+                        <a href="/patientsPage/<%= el._id %>">
+                            <h5 class=" card-title">
+                                <%= el.postTitle %>
+                            </h5>
+                            <p class="card-title">
+                                <%= el.patName %>
+                                    <p>
+                                        <p class="card-title">
+                                            <%= el.docName %>
+                                                <p>
+                                                    <p class="card-title">
+                                                        <%= el.docVisitDate %>
+                                                            <p>
+                                                                <p class="card-title">
+                                                                    <%= el.docInstructions %>
+                                                                        <p>
+                                                                            <p class="card-title">
+                                                                                <%= el.docInstructions %>
+                                                                                    <p>
+                        </a>
+
+                    </div>
+                </div>
+                <% }) %>
+        </div>
+    </div>
+    </div>
+
+
+
+
+    <script src="/js/leaflet.js"></script>
+    <script src="/js/profilemap.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        function toggle(id, elementValue) {
+            document.getElementById(id).style.visibility = elementValue.value == 'yes' ? 'visible ' : 'hidden';
+        }
+    </script>
+    <%- include( 'partials/footer') -%>

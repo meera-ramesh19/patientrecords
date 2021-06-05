@@ -1,0 +1,41 @@
+<%- include('partials/header') -%>
+
+    <main class="container">
+        <div class="row justify-content-center">
+            <section class="col-6 mt-5">
+                <% if (locals.messages.errors) { %>
+                    <% messages.errors.forEach( el => { %>
+                        <div class="alert alert-danger">
+                            <%= el.msg %>
+                        </div>
+                        <% }) %>
+                            <% } %>
+                                <% if (locals.messages.info) { %>
+                                    <% messages.info.forEach( el => { %>
+                                        <div class="alert alert-danger">
+                                            <%= el.msg %>
+                                        </div>
+                                        <% }) %>
+                                            <% } %>
+                                                <div class="card text-center border-primary mb-3 col-6 shadow w-100" style="max-width:1000rem; margin:5rem auto">
+                                                    <div class="card-body">
+                                                        <div class="card-header bg-success bg-darken-xl ">
+                                                            <p class="p-3 display-7">DOCTOR VISIT-PRESCRIPTION RECORDS APP</p>
+                                                        </div>
+                                                        <div class="pt-5 pb-5">
+                                                            <form action="/login" method="POST" class="btn-group flex-column col-6">
+                                                                <label for="email1" class="form-label">Email address</label>
+                                                                <input type="email" name="email" placeholder="Email" id="email1" aria-describedby="emailHelp" class="form-control btn-lg my-4">
+                                                                <label for="password1" class="form-label">Password</label>
+                                                                <input type="password" id="password" name="password" placeholder="Password" name="password" class="form-control btn-lg my-4">
+                                                                <input type="submit" class="btn btn-outline-primary btn-lg col my-4">
+                                                                <p class="my-4">Don't have an account yet? <a href="/signup">SIGN UP</a></p>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+
+            </section>
+            </div>
+    </main>
+
+    <%- include('partials/footer') -%>
