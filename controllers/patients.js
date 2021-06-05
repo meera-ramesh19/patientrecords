@@ -1,7 +1,8 @@
+const fs = require('fs')
 const Patient = require('../models/Patient')
 const path = require("path");
 const User = require('../models/User')
-const cloudinary = require('../middleware/cloudinary')
+const {cloudinary} = require('../middleware/cloudinary')
 const moment = require('moment')
 const upload = require("../middleware/multer");
 
@@ -19,7 +20,7 @@ module.exports = {
 
     createPatient: async(req, res) => {
         //creating new record in db
-        console.log(req.file)
+        // console.log(req.files)
         console.log(req.body.docVisitDate)
         const fileErrors = [];
         var yesterday = moment().subtract(0, "day").format("YYYY-MM-DD");
@@ -50,7 +51,19 @@ module.exports = {
         try {
 
 
-            const result = await cloudinary.uploader.upload(req.file.path);
+            // const result = await cloudinary.uploader.upload(req.file.path)
+            
+            const urls = []
+            const files = req.files
+            for (const file of files){
+                const { path } = file
+                console.log(path)
+                const newPath = await cloudinary.uploader.upload(path, {folder: birthToDate })
+                urls.push(newPath.secure_url)
+                // fs.unlinkSync(path)
+            }
+
+            // console.log(urls)
             const patient = await Patient.create({
                 postTitle: req.body.postTitle,
                 patName: req.body.patName,
@@ -84,11 +97,11 @@ module.exports = {
                 docPills: req.body.docPills,
                 docCream: req.body.docCream,
                 docDrops: req.body.docDrops,
-                image: result.secure_url,
+                image: urls,
                 // lat: req.body.lat,
                 // lon: req.body.lon,
                 user: req.user,
-                cloudinary_id: result.public_id,
+                cloudinary_id: birthToDate,
                 files: req.files,
                 //const urls = []
                 // for (const file of files) {

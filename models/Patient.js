@@ -159,8 +159,8 @@ const PatientSchema = new mongoose.Schema({
     //     sparse: true,
     // },
     image: {
-        type: String,
-        required: true,
+        type: [String],
+        required: false,
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,

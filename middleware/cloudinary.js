@@ -11,9 +11,11 @@ cloudinary.config({
 
 
 // https://medium.com/the-andela-way/how-to-upload-multiple-images-using-cloudinary-and-node-js-2f053b167b80
-//exports.uploads = (file, folder) => {
+// uploads = async (file, folder) => {
 //     return new Promise(resolve => {
-//         cloudinary.uploader.upload(file, (result) => {
+//         cloudinary.uploader.upload(file, (error, result) => {
+//             if(error) return res.status(500).send("upload image error")
+//             console.log(result)
 //             resolve({
 //                 url: result.url,
 //                 id: result.public_id
@@ -29,4 +31,4 @@ cloudinary.config({
 
 
 
-module.exports = cloudinary;
+module.exports = {cloudinary};
