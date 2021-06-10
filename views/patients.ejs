@@ -22,7 +22,7 @@
                                 <%= patient.patName %>
                             </p>
                             <p class="card-text">
-                                <%= patient.patComments %>
+                                <%= patient.patSsn %>
                             </p>
                             <p class="card-text">
                                 <%= patient.patReviews %>
@@ -85,6 +85,8 @@
                                 </h5>
                             </div>
                         </div>
+
+
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
 
                             <a href="#" class="btn btn-primary  fa fa-edit">Update</a>
@@ -108,3 +110,5 @@
 
 
                 <%- include('partials/footer') -%>
+
+                    <script src="js/map.js"></script>

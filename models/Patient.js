@@ -1,10 +1,18 @@
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema.Types;
+const axios = require('axios');
+
 
 const PatientSchema = new mongoose.Schema({
     postTitle: {
         type: String,
         required: true,
+    },
+    patSSN: {
+        type: Number,
+        required: true,
+        min: 1000000000,
+        max: 9999999999
     },
     patName: {
         type: String,
@@ -29,36 +37,30 @@ const PatientSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-    // patReviews: [{
-    //     type: Number,
-    //     min: 1,
-    //     max: 5,
-    //     ref: "User",
-    //     validate: {
-    //         // validator accepts a function definition which it uses for validation
-    //         validator: Number.isInteger,
-    //         message: "{VALUE} is not an integer value."
-    //     }
-    // }],
-    patDocAdd: {
-        // phstreet: {
-        //     type: String,
-        // },
-        // phcity: {
-        //     type: String,
-        // },
-        // phstate: {
-        //     type: String,
-        // },
-        // phcountry: {
-        //     type: String,
-        // },
-        // phpincode: {
-        //     type: String,
-        // },
-        type: String,
-        required: true,
-    },
+
+
+    docAdd: [{
+        street: {
+            type: String,
+        },
+        city: {
+            type: String,
+        },
+        state: {
+            type: String,
+        },
+        country: {
+            type: String,
+        },
+        pincode: {
+            type: String,
+        }
+
+    }],
+    // docAdd: {
+    //     type: String,
+    //     required: true,
+    // },
     patPharmacyName: {
         type: String,
         required: true,
@@ -134,21 +136,38 @@ const PatientSchema = new mongoose.Schema({
         required: false,
         // default: 'Unknown',
     },
-    address: {
-        type: String,
-        required: true,
+    lat: {
+        type: String
+    },
+    lon: {
+
+        type: String
     },
 
-    likes: [{ type: ObjectId, ref: "User" }],
+    // likes: [{ type: ObjectId, ref: "User" }],
 
-    dislikes: [{ type: ObjectId, ref: "User" }],
-    // lat: {
-    //     type: String,
-    //     required: true,
-    // },
-    // lon: {
-    //     type: String,
-    //     required: true,
+    // dislikes: [{ type: ObjectId, ref: "User" }],
+    // patReviews: [{
+    //     type: Number,
+    //     min: 1,
+    //     max: 5,
+    //     ref: "User",
+    //     validate: {
+    //         // validator accepts a function definition which it uses for validation
+    //         validator: Number.isInteger,
+    //         message: "{VALUE} is not an integer value."
+    //     }
+    // }],
+    // location: {
+    //     type: {
+    //         type: String,
+    //         enum: ['Point']
+    //     },
+    //     coordinates: {
+    //         type: [Number],
+    //         index: '2dsphere'
+    //     },
+
     // },
     // postedBy: {
     //     // type: { user: User.UserSchema },
@@ -175,5 +194,8 @@ const PatientSchema = new mongoose.Schema({
         default: Date.now,
     },
 }, { timestamps: true });
+
+
+
 
 module.exports = mongoose.model('Patient', PatientSchema);

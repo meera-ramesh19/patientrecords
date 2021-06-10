@@ -8,8 +8,7 @@
                     <a class="btn btn-primary" href="/feed">Return to Feed</a>
                 </div>
             </div>
-            <%
-        const relativeTime = function(postedTime) {
+            <% const relativeTime = function(postedTime) {
             if (!postedTime) {
                 return ''
             }
@@ -114,11 +113,12 @@
                                     <h5 class="card-title">
                                         <% patients.image.forEach( img => { %>
                                             <img src="<%= img %>" width='300' style='border: 5px solid rgb(189, 45, 45)'>
-                                        <% }) %>
-                                        
+                                            <% }) %>
+
 
                                     </h5>
                                 </div>
+
                             </div>
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
 

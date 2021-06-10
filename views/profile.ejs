@@ -54,9 +54,16 @@
                     <div class="invalid-feedback"> Please enter your Name </div>
 
                 </div>
+                <div class="col31 col-6">
+                    <label for="validation33" class="form-label">SSN:
+   <input class="form-control" type="text"  id="validation33" placeholder="Enter your SSN" name="patSSN" min="1000000000" max="9999999999" required>
+           
+         </label>
+                    <div class="invalid-feedback"> Please enter your SSN </div>
 
+                </div>
                 <div class="col2 col-6">
-                    <label for="validation02" class="form-label">Patient DateofBirth:
+                    <label for="validation02" class="form-label">DateofBirth:
           <input type="date" placeholder="Enter your birthdate" name="patDob" class="form-control" id="validation02" required>
         </label>
                     <div class="invalid-feedback "> Please enter your DateofBirth</div>
@@ -106,19 +113,19 @@
 
                 </div>
 
-                <h4>Doctor Address:</h4>
+                <!-- <h4>Doctor Address:</h4> -->
 
                 <div class="col6 col-6">
                     <label for="validation06" class="form-label">Doctor Street:
-                    <input type="text" name="address" class="form-select" id="validation06" required>
+                    <input type="text" name="street" class="form-select" id="validation06" required>
                   </label>
-                    <div class="invalid-feedback"> Please enter street name</div>
+                    <div class="invalid-feedback"> Please enter DoctorAddress</div>
 
                 </div>
-                <!-- 
+
                 <div class="col7 col-6">
                     <label for="validation07" class="form-label">City:
-                    <input  type="text" name="docAddress[docCity]" class="form-select" id="validation07" required>
+                    <input  type="text" name="city" class="form-select" id="validation07" required>
                  </label>
                     <div class="invalid-feedback"> Please enter street name</div>
 
@@ -126,7 +133,7 @@
 
                 <div class="col8 col-6">
                     <label for="validation08" class="form-label">State:
-                    <input  type="text" name="docAddress[docState]" class="form-select" id="validation08" required>
+                    <input  type="text" name="state" class="form-select" id="validation08" required>
                  </label>
                     <div class="invalid-feedback"> Please enter state name</div>
 
@@ -134,7 +141,7 @@
 
                 <div class="col9 col-6">
                     <label for="validation09" class="form-label">Country :
-                    <input  type="text" name="docAddress[docCountry]" class="form-select" id="validation09" required>
+                    <input  type="text" name="country" class="form-select" id="validation09" required>
                  </label>
                     <div class="invalid-feedback"> Please enter Country name</div>
 
@@ -142,11 +149,11 @@
 
                 <div class="col10 col-6">
                     <label for="validation10" class="form-label">Pincode:
-                    <input type="text" name="docAddress[docPincode]" class="form-select" id="validation10" required>
+                    <input type="text" name="pincode" class="form-select" id="validation10" required>
                  </label>
                     <div class="invalid-feedback"> Please enter pincode</div>
 
-                </div> -->
+                </div>
 
 
                 <div class="col11 col-6">
@@ -338,17 +345,20 @@
                                 <%= el.patName %>
                                     <p>
                                         <p class="card-title">
-                                            <%= el.docName %>
+                                            <%= el.patSsn %>
                                                 <p>
                                                     <p class="card-title">
-                                                        <%= el.docVisitDate %>
+                                                        <%= el.docName %>
                                                             <p>
                                                                 <p class="card-title">
-                                                                    <%= el.docInstructions %>
+                                                                    <%= el.docVisitDate %>
                                                                         <p>
                                                                             <p class="card-title">
                                                                                 <%= el.docInstructions %>
                                                                                     <p>
+                                                                                        <p class="card-title">
+                                                                                            <%= el.docInstructions %>
+                                                                                                <p>
                         </a>
 
                     </div>

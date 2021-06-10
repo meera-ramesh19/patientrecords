@@ -2,13 +2,17 @@ const fs = require('fs')
 const Patient = require('../models/Patient')
 const path = require("path");
 const User = require('../models/User')
-const {cloudinary} = require('../middleware/cloudinary')
+const { cloudinary } = require('../middleware/cloudinary')
 const moment = require('moment')
 const upload = require("../middleware/multer");
+const axios = require('axios');
+
+
+require("dotenv").config({ path: "./config/.env" });
 
 module.exports = {
     getProfile: async(req, res) => {
-        // console.log(req.user)
+
         try {
             const patientItems = await Patient.find({ userId: req.user.id });
 
@@ -20,13 +24,30 @@ module.exports = {
 
     createPatient: async(req, res) => {
         //creating new record in db
-        // console.log(req.files)
-        console.log(req.body.docVisitDate)
+
+        console.log(req)
+
+        const address = []
+        address.push({
+            street: req.body.street,
+            city: req.body.city,
+            state: req.body.state,
+            country: req.body.country,
+            pincode: req.body.pincode
+        })
+        const newaddress = Object.assign({}, ...address);
+
         const fileErrors = [];
+        // var address = req.body.docAdd
+        var latitude = ''
+        var longitude = ''
+        var ssnNumber = req.body.patSSN
         var yesterday = moment().subtract(0, "day").format("YYYY-MM-DD");
         var birthToDate = req.body.patDob
         var appDate = req.body.docVisitDate
         var followDate = req.docFollowUpDate
+            // var total = birthToDate.toString() + ssnNumber.toString()
+
         if (moment(birthToDate, "YYYY-MM-DD", true).isAfter(yesterday)) {
             // alert("date is today or in future");
             // console.log("date is today or in future");
@@ -46,40 +67,73 @@ module.exports = {
 
         }
 
+        // function formatSocialSecurity(ssnNumber) {
+        //     val = val.replace(/\D/g, '');
+        //     val = val.replace(/^(\d{3})/, '$1-');
+        //     val = val.replace(/-(\d{2})/, '-$1-');
+        //     val = val.replace(/(\d)-(\d{4}).*/, '$1-$2');
+        //     return val;
+        // }
 
 
         try {
 
 
-            // const result = await cloudinary.uploader.upload(req.file.path)
-            
+
+            //const result = await cloudinary.uploader.upload(req.file.path)
+
             const urls = []
             const files = req.files
-            for (const file of files){
+            for (const file of files) {
                 const { path } = file
                 console.log(path)
-                const newPath = await cloudinary.uploader.upload(path, {folder: birthToDate })
+                const newPath = await cloudinary.uploader.upload(path, { folder: birthToDate })
                 urls.push(newPath.secure_url)
-                // fs.unlinkSync(path)
+                    // fs.unlinkSync(path)
             }
 
             // console.log(urls)
+
+            const params = {
+                text: newaddress,
+                apikey: process.env.YOUR_API_KEY
+
+            }
+            console.log(params)
+
+
+            // http: //api.positionstack.com/v1/forward
+
+            axios.get('https://app.geocodeapi.io/api/v1/search', { params })
+                .then(response => {
+                    const apiResponse = response.data
+                    lat = apiResponse.features[0].geometry.coordinates[0]
+                    lon = apiResponse.features[0].geometry.coordinates[1]
+                    console.log(lat, lon)
+
+                }).catch(error => {
+                    console.log(error);
+                });
+
+
+
             const patient = await Patient.create({
+
                 postTitle: req.body.postTitle,
                 patName: req.body.patName,
+                patSSN: ssnNumber,
                 patDob: req.body.patDob,
                 patComments: req.body.patComments,
                 patAilment: req.body.patAilment,
                 // patReviews: req.body.patReviews,
-                patDocAdd: req.body.patDocAdd,
-                // phStreet: req.body.phStreet,
-                // phCity: req.body.phCity,
-                // phState: req.body.phState,
-                // phCountry: req.body.phCountry,
-                // phPincode: req.body.phpinCode,
+                docAdd: address,
+                // street: req.body.street,
+                // city: req.body.city,
+                // state: req.body.state,
+                // country: req.body.country,
+                // pincode: req.body.pincode,
                 patPharmacyName: req.body.patPharmacyName,
                 docName: req.body.docName,
-                address: req.body.address,
                 // docStreet: req.body.docStreet,
                 // docCity: req.body.docCity,
                 // docState: req.body.docState,
@@ -98,34 +152,31 @@ module.exports = {
                 docCream: req.body.docCream,
                 docDrops: req.body.docDrops,
                 image: urls,
-                // lat: req.body.lat,
-                // lon: req.body.lon,
+                // lat: latitude,
+                // lon: longitude,
                 user: req.user,
                 cloudinary_id: birthToDate,
                 files: req.files,
-                //const urls = []
-                // for (const file of files) {
-                //     const { path } = file;
-                //     const newPath = await uploader(path)
-                //     urls.push(newPath)
-                //     fs.unlinkSync(path)
-                // }
+
             });
+
             await patient.save();
+
             console.log('Patient has been added!');
             res.redirect(`/patients`)
         } catch (err) {
             console.error(err)
         }
+
     },
 
 
     getPatient: async(req, res) => {
         try {
             //Find function without any argument will return all
-            //the records from the 'Patiet' collection.
+            //the records from the 'Patient' collection.
             const PatientsAllVisits = await Patient.find()
-            res.render('index.ejs', { patients: PatientsAllVisits, reviews: patReviews, user: req.user, leaflet: false })
+            res.render('index.ejs', { patients: PatientsAllVisits, user: req.user, leaflet: false })
         } catch (err) {
             console.error(err)
         }

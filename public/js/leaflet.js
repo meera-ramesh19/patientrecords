@@ -1,16 +1,28 @@
-// Set Tile layer source and options
-var OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+< script >
+    // Initialize the map
+    const map = L.map('map')
+
+// Get the tile layer from OpenStreetMaps
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+
+    // Specify the maximum zoom of the map
     maxZoom: 19,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>'
-});
 
-// Initialize map //
-var map = new L.Map('mymap').addLayer(OpenStreetMap_HOT).setView([41.640078, -100.463034], 2.5);
+    // Set the attribution for OpenStreetMaps
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
 
-// Add the Locate search box //
-var osmGeocoder = new L.Control.OSMGeocoder({
-    placeholder: 'Search location...',
-    collapsed: false
-});
+// Set the view of the map
+// with the latitude, longitude and the zoom value
+map.setView([48.8584, 2.2945], 16);
 
-map.addControl(osmGeocoder);
+// Set the map view to the user's location
+// Uncomment below to set map according to user location
+// map.locate({setView: true, maxZoom: 16});
+
+// Show a market at the position of the Eiffel Tower
+let docOfficeMarker = L.marker([48.8584, 2.2945]).addTo(map);
+
+// Bind popup to the marker with a popup
+docOfficeMarker.bindPopup("Eiffel Tower").openPopup(); <
+/script>
