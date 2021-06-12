@@ -1,0 +1,431 @@
+Saving Geolocation data with Google Maps API and MongoDB
+See in this article how to develop an application based on geographic data using Google Maps API and MongoDB. The application consists of a page on which we will enter the location of taxi passengers and another where we will see a map.
+
+ 100  5  0  1325  Like (0) (0)
+
+The Google Maps API allows you to use most of the features available in Google Maps site to create applications with the ability, among other things, to recover the latitude and longitude of an address, add a marker on a map, create an area (one polygon or a circle) and calculating the distance between two points.
+
+MongoDB, whose name comes from one humongous American slang to describe something very big, was established in 2009 and currently is the type NoSQL database most used in the world. The code is open and can be used on different platforms and language customers. Furthermore, MongoDB uses JSON to describe and store documents.
+
+First, let's create the HTML page to enter passenger data. This page will receive the name and address of the passenger. The process to find out the geographic location from the address is called geopositioning, and the Google Maps API helps us in this process.
+
+To use the Google Maps API, we must have a previous registration on Google and go to https://developers.google.com/maps/signup. On this page, you can create an access key to the Google Maps API.
+
+Having this access key, we will import to the new page Google Maps API scripts. We must add CSS, jQuery library and, especially, the API to which we must pass the key - put your call on - created earlier, as explained in Listing 1.
+
+Listagem 1. Scripts of Google Maps API
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+  <script src="http://maps.googleapis.com/maps/api/js?key=<CHAVE>&sensor=false"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+
+In Listing 2 shows how to create the page using geocoding - English geocoder - which will return latitude and longitude values from the entered address on a page - in this case does not present the HTML code, but it is expected that there the text boxes: location, which will contain the address of the passenger and user must contain the passenger's name. The values returned by this function will be sent to Node.js server - via a GET call - that the insert in MongoDB presented below.
+
+Listing 2. geo-Function
+  function getLatLong(){
+        var geo = new google.maps.Geocoder;
+        //value comes from textarea called location
+        var address = $('#location').val();
+        var user = $('#user).val();
+         
+        geo.geocode({'address':address},function(results, status){
+        if (status == google.maps.GeocoderStatus.OK) {
+              var lat = results[0].geometry.location.lat();
+              var lng = results[0].geometry.location.lng();
+   
+              var latlng = new google.maps.LatLng(lat,lng);
+   
+              var mapProp = {
+                    center:latlng,
+                    zoom:18,
+                    mapTypeId:google.maps.MapTypeId.ROADMAP,
+                    mapTypeControl: false
+              };
+               
+              var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+              var marker = new google.maps.Marker({
+                    position: latlng,
+                    map: map,
+                    title:name
+              });
+              
+              $.get( "http://localhost:1346?nome="+user+"&lat="+lat+"&lon="+lng, null);   
+        } else {
+              //alert("Geocoder failed: " + status);
+        }
+        });
+  }
+To use MongoDB must first install this document manager. In this article we will use Ubuntu, but MongoDB can also be installed on other Linux and Windows. Table 1 provides a brief description of the command sequence that we will use to install MongoDB.
+
+Command
+
+Description
+
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+
+Import the public key of the MongoDB repository
+
+echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
+
+Create a list for MongoDB
+
+sudo apt-get update
+
+Update the APT with the new repository and the new list
+
+sudo apt-get install -y mongodb-org
+
+Install MongoDB
+
+sudo service mongod start
+
+Start MongoDB
+
+/var/log/mongodb/mongod.log
+
+Check that MongoDB has been successfully started. If so, the last line of the log file should be [initandlisten] waiting for connections on port 27017
+
+mongo
+
+Enter into shell
+
+use mrbool
+
+Switch to the database named MrBool
+
+
+Table 1. Commands to install MongoDB on Ubuntu.
+
+The next step is to create a collection - which can be understood with the corresponding table in SQL-based databases. To create this collection, we enter the MongoDB command console and run the command Listing 3. The command will create a type collection capped call passengers whose maximum size is 5,242,880 bytes. This collection may receive an immense amount of simultaneous data for writing, reading or exclusion, since this type of collection - the capped type - acts as a ring buffer, in which data can be written unceasingly, since the oldest values will be envelopes, if necessary, to keep the limit within the specified size. This feature is extremely useful for log records, data streaming and real-time applications.
+
+Listing 3. Creating a capped collection
+db.createCollection("passangers", { capped : true, size : 5242880, max : 5000 } ) 
+This collection will receive JSON documents that will represent the position of the passengers inserted in Listing 2. Command Line Through can enter values to this collection, as shown in Listing 4. This insertion using standard called GeoJSON to enter the passenger position recovered in Listing 3. in this example we create a point using latitude and longitude values, yet it allows GeoJSON also create lines and polygons.
+
+Listing 4. Entering values in the collection passengers, called insert.js
+  db.passengers.insert(
+  {
+  _id: "P1",
+  "name": "Jhon Stuart",
+  "loc": {
+  type: "Point",
+  "coordinates": [125.6, 10.1]
+  } 
+  }
+  {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [125.6, 10.1]
+    },
+    "properties": {
+      "name": "Jhon Stuart"
+    }
+  }
+  ) 
+   
+  db.passengers.find() 
+Following we will integrate Google Maps API using the Node.js driver for MongoDB. As explained in Table 2, the first step is to install Node.js and the driver called MongoJS.
+
+Command
+
+Description
+
+sudo apt-get install nodejs
+
+Install Node.js
+
+sudo apt-get install npm
+
+Install npm, Node.js package manager
+
+npm install mongodb
+
+Install MongoJS
+
+npm install jquery
+
+Install integration between Node.js and jQuery
+
+nodejs inserir.js
+
+Start node.js script execution
+
+
+Table 2. Commands for installing Node.js.
+
+With the driver installed, we can create a new Node.js file (to start this file run nodejs inserir.js) responsible for sending the information to MongoDB, ie retrieve the passenger's name, its latitude, its longitude and through the driver of the collection insert passengers. The first lines in Listing 5 - as indicated by the comments - establishing the connection with MongoDB. Following created using the client - called MongoClient where we will create a document in JSON format with the name values, latitude and longitude, and finally perform the insertion in MongoDB.
+
+Listing 5. Entering values in the collection passenger
+  var http = require('http');
+  var url = require('url');
+  http.createServer(function (req, res) {
+       var url_parts = url.parse(req.url, true);
+       var query = url_parts.query;
+   
+       var latitude = query.lat;
+       var longitude = query.lon;
+       var usuario = query.name;
+   
+       // Retrieve
+       var MongoClient = require('mongodb').MongoClient;
+   
+       //Connect to MongoDB
+       MongoClient.connect("mongodb://localhost:27017/mrbool", function(err, db) {
+       if(err) { return console.dir(err); }
+   
+       //Choose passangers collection
+       var collection = db.collection('passageiros');
+       var doc = {
+  'name": usuario,
+  'loc': {
+  'type': 'Point',
+  'coordinates': [latitude, longitude]
+  }
+   
+  collection.insert(doc , { w: 0 });
+   
+  });}).listen(1346, '0.0.0.0');
+  console.log('Server running at http 0.0.0.0:1346:'); 
+The next task and create a page that displays on a map the passenger positions that were previously entered. Listing 6 shows the recuperaPassageiros.js function (to start this file run nodejs recuperaPassageiros.js), it will also create a connection to MongoDB and set a collection target passengers. In addition, this function will execute a find command to search all locations that are stored in our database. Finally, the output of this command will be a call list items that will be sent to apresentaLocalizacoes function.
+
+Listing 6. passenger positioning Recovery
+  var http = require('http');
+   
+  http.createServer(function (req, res) {
+   
+  // Retrieve
+  var MongoClient = require('mongodb').MongoClient;
+   
+  // Connect to the db
+  MongoClient.connect("mongodb://localhost:27017/mrbool", function(err, db) {
+  if(err) { return console.dir(err); }
+   
+  var collection = db.collection('passageiros');
+   
+  collection.find().toArray(function(err, docs){
+   
+  res.writeHead(200, {
+                  'Content-Type': 'text/html',
+                  'Access-Control-Allow-Origin' : '*'});
+   
+  var intCount = docs.length;
+  console.log(intCount);
+  if(intCount > 0){
+       res.write("[");
+       for(var i=0; i<intCount;i++){
+            var jsonText = JSON.stringify({name: docs[i].properties.name.toString(),lat:docs[i].geometry.coordinates[0].toString(),lon:docs[i].geometry.coordinates[1].toString()});
+            
+            console.log(jsonText);
+            res.write(jsonText);
+            if(i!=intCount-1) res.write(",");
+       }
+       res.write("]");
+  }
+   
+  res.end();
+  });});}).listen(1345, '0.0.0.0');
+  console.log('Server running at http00.0.0.1:1345:'); 
+Now let's return to the Google Maps API to display the values stored in MongoDB. In a new page will add the same scripts shown in Listing 1. Further, as mentioned in the code in Listing 7, we create a Map object, which is the most basic value for the Google Maps API. This map has properties like the kind that will be a ROADMAP (a road map like the standard Google Maps), and we will shut down the possibility for the user to modify the map type in MapTypeControl: false. To add the positions of each passenger on the map we will use an object of type Marker provided by Google Maps API. Each marker will get the latitude and longitude and display the passenger's name.
+
+Listing 7. Presentation of positions in Google Maps
+  <!DOCTYPE html>
+  <html>
+  <head>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+                          <script src="http://maps.googleapis.com/maps/api/js?key=<CHAVE>&sensor=false"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+   
+  <script>
+   
+  function showLocations() {
+   
+  $.get( "http://localhost:1345/", function( data ) {
+              
+              var lat=-20.1;
+              var lon=50.1;
+   
+              var myLatlng = new google.maps.LatLng(lat, lon);
+              var mapProp = {
+                          center:myLatlng,
+                          zoom:5,
+                          mapTypeId:google.maps.MapTypeId.ROADMAP,
+                          mapTypeControl: false
+              };
+   
+              //criando objeto mapa
+              var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+              
+              var obj = jQuery.parseJSON(data);
+              
+              $.each($.parseJSON(data), function(idx, obj) {
+              
+                          var lat=obj.lat;
+                          var lon=obj.lon;
+              
+                          var myLatlng = new google.maps.LatLng(lat, lon);
+                          
+                          var marker = new google.maps.Marker({
+                                     position: myLatlng,
+                                     map: map,
+                                     title: obj.nome
+                          });
+              });
+              
+  });
+   
+  }
+   
+  </script>
+  </head>
+  <body onload='showLocations()'>
+  <div id="googleMap" style="position:fixed;top:0px;left:0px;width:100%;height:700px;">
+  </body>
+  </html>
+Obviously, this application is not enough to help users who are seeking taxi. So we can also create the interface so that taxi drivers inform its position. To do this, we will create a new collection called taxis, as shown in Listing 8.
+
+Listing 8. Creation of the capped collection taxis
+db.createCollection("passengers", { capped : true, size : 5242880, max : 5000 } ) 
+Following we will create a function in Node.js, similarly to the codes presented above. In Listing 9 we will receive the position where the taxi is at any given time and record the position and the driver's name at that time. Let's hide the HTML code, it has the same characteristics as Listing 2.
+
+Listing 9. Entering values in the collection taxi
+  var http = require('http');
+  var url = require('url');
+  http.createServer(function (req, res) {
+       var url_parts = url.parse(req.url, true);
+       var query = url_parts.query;
+   
+       var latitude = query.lat;
+       var longitude = query.lon;
+       var taxista = query.taxista;
+   
+       // Retrieve
+       var MongoClient = require('mongodb').MongoClient;
+   
+       //Connect to MongoDB
+       MongoClient.connect("mongodb://localhost:27017/mrbool", function(err, db) {
+       if(err) { return console.dir(err); }
+   
+       //Choose the taxi collection
+       var collection = db.collection(taxis);
+       var doc = {
+            'type': 'Feature',
+            'geometry': {
+                  'type': 'Point',
+                  'coordinates': [latitude, longitude]
+            },
+            'properties': {
+            'name': taxista
+            }
+       }
+   
+  collection.insert(doc , { w: 0 });
+   
+  });}).listen(1346, '0.0.0.0');
+  console.log('Server running at http 0.0.0.0:1346:'); 
+With the location of the registered taxi drivers in MongoDB can, based on the positioning of a passenger, recover which are the closest taxi drivers. Again we create a node.js function to perform this search and return the expected values. The first step and connect to taxis colection of MrBool database. With this, we can send a query that will filter using the $ near operator. This operator will receive the current position of the passenger and return the nearest taxis to him in a list.
+
+Listing 10. positioning of the recovery of the closest taxi drivers of a passenger
+  var http = require('http');
+   
+  http.createServer(function (req, res) {
+   
+       var url_parts = url.parse(req.url, true);
+       var query = url_parts.query;
+   
+       var latitude = query.lat;
+       var longitude = query.lon;
+   
+  // Retrieve
+  var MongoClient = require('mongodb').MongoClient;
+   
+  // Connect to the db
+  MongoClient.connect("mongodb://localhost:27017/mrbool", function(err, db) {
+  if(err) { return console.dir(err); }
+   
+  var taxis = db.collection('taxis');
+   
+  taxis.find({ loc: { $near: [latitude, longitude ] } }).toArray(function(err, docs){
+   
+  res.writeHead(200, {
+                  'Content-Type': 'text/html',
+                  'Access-Control-Allow-Origin' : '*'});
+   
+  var intCount = docs.length;
+  console.log(intCount);
+  if(intCount > 0){
+       res.write("[");
+       for(var i=0; i<intCount;i++){
+            var jsonText = JSON.stringify({nome: docs[i].properties.name.toString(),lat:docs[i].geometry.coordinates[0].toString(),lon:docs[i].geometry.coordinates[1].toString()});
+            
+            console.log(jsonText);
+            res.write(jsonText);
+            if(i!=intCount-1) res.write(",");
+       }
+       res.write("]");
+  }
+   
+  res.end();
+  });});}).listen(1347, '0.0.0.0');
+  console.log('Server running at http00.0.0.1:1347:'); 
+Google Maps can now present the results of Listing 10diretamente on the map. The function in Listing 11 can be changed in order to differentiate taxis markers for passengers markers.
+
+Listing 11. Presentation of positions in Google Maps
+  <!DOCTYPE html>
+  <html>
+  <head>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+                          <script src="http://maps.googleapis.com/maps/api/js?key=<KEY>&sensor=false"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+   
+  <script>
+   
+  function showTaxis() {
+   
+  $.get( "http://localhost:1347/", function( data ) {
+              
+              var lat=-20.1;
+              var lon=50.1;
+   
+              var myLatlng = new google.maps.LatLng(lat, lon);
+              var mapProp = {
+                          center:myLatlng,
+                          zoom:5,
+                          mapTypeId:google.maps.MapTypeId.ROADMAP,
+                          mapTypeControl: false
+              };
+   
+              //Creating map object
+              var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+              
+              var obj = jQuery.parseJSON(data);
+              
+              $.each($.parseJSON(data), function(idx, obj) {
+              
+                          var lat=obj.lat;
+                          var lon=obj.lon;
+              
+                          var myLatlng = new google.maps.LatLng(lat, lon);
+                          
+                          var marker = new google.maps.Marker({
+                                     position: myLatlng,
+                                     map: map,
+                                     title: obj.name
+                          });
+              });
+              
+  });
+   
+  }
+   
+  </script>
+  </head>
+  <body onload='showLocations()'>
+  <div id="googleMap" style="position:fixed;top:0px;left:0px;width:100%;height:700px;">
+  </body>
+  </html>
+Conclusion
+This example can be expanded using the MongoDB capabilities to calculate the distance points, check whether a passenger is in the taxi drivers operating area or even to create an Android application to automatically retrieve the latitude and longitude values directly from GPS. Moreover, we could use the recovered document MongoDB using the the map.data.loadGeoJson function of the Google Maps API, which carries the points directly from GeoJSON document.
+http://mrbool.com/saving-geolocation-data-with-google-maps-api-and-mongodb/32551
+
+Read more: http://mrbool.com/saving-geolocation-data-with-google-maps-api-and-mongodb/32551#ixzz6xS6xfYlD

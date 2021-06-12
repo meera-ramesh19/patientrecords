@@ -8,6 +8,8 @@ const upload = require("../middleware/multer");
 const axios = require('axios');
 
 
+var $ = require('jQuery');
+
 require("dotenv").config({ path: "./config/.env" });
 
 module.exports = {
@@ -39,8 +41,7 @@ module.exports = {
 
         const fileErrors = [];
         // var address = req.body.docAdd
-        var latitude = ''
-        var longitude = ''
+
         var ssnNumber = req.body.patSSN
         var yesterday = moment().subtract(0, "day").format("YYYY-MM-DD");
         var birthToDate = req.body.patDob
@@ -66,7 +67,18 @@ module.exports = {
             fileErrors.push({ msg: "FollowUpDate cannot be earlier than VisitDate" })
 
         }
+        if (req.file.size > 1024 * 1024 * 3)
+            fileErrors.push({ msg: "Uploaded file is larger than 3 MB" });
 
+        if (!(/jpeg|jpg|png|gif/.test(
+                path.extname(req.file.originalname).toLowerCase()
+            ) && /jpeg|jpg|png|gif/.test(req.file.mimetype)))
+            fileErrors.push({ msg: "Only jpeg, jpg, png and gif allowed" });
+
+        if (fileErrors.length) {
+            req.flash("errors", fileErrors);
+            return res.redirect("/login");
+        }
         // function formatSocialSecurity(ssnNumber) {
         //     val = val.replace(/\D/g, '');
         //     val = val.replace(/^(\d{3})/, '$1-');
@@ -77,8 +89,6 @@ module.exports = {
 
 
         try {
-
-
 
             //const result = await cloudinary.uploader.upload(req.file.path)
 
@@ -101,20 +111,33 @@ module.exports = {
             }
             console.log(params)
 
+            var lat = "";
+            var lon = ""
+            console.log(lat, lon)
+            async function getlatlon() {
+                const res = await axios.get('https://app.geocodeapi.io/api/v1/search', { params })
+                    // const apiResponse = res.json()
+                return res
+            }
 
-            // http: //api.positionstack.com/v1/forward
+            const result = getlatlon()
+                .then(data => {
+                    console.log(data)
+                    return data
+                })
 
-            axios.get('https://app.geocodeapi.io/api/v1/search', { params })
-                .then(response => {
-                    const apiResponse = response.data
-                    lat = apiResponse.features[0].geometry.coordinates[0]
-                    lon = apiResponse.features[0].geometry.coordinates[1]
-                    console.log(lat, lon)
+            // axios.get('https://app.geocodeapi.io/api/v1/search', { params })
+            //     .then(response => {
+            //         const apiResponse = response.data
+            //         lat = apiResponse.features[0].geometry.coordinates[0]
+            //         lon = apiResponse.features[0].geometry.coordinates[1]
+            //         console.log(lat, lon)
+            //     }).catch(error => {
+            //         console.log(error);
+            //     });
 
-                }).catch(error => {
-                    console.log(error);
-                });
 
+            // console.log(lat, lon)
 
 
             const patient = await Patient.create({

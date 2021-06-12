@@ -1,5 +1,11 @@
 <%- include('partials/header') -%>
     <%- include('partials/navbar') -%>
+        <style>
+            #map {
+                height: 300px;
+                width: 600px;
+            }
+        </style>
 
         <body>
             <div class="container justify-content-center">
@@ -92,7 +98,10 @@
                                     <h5 class="card-title">
                                         <%= patients.patAilment %>
                                     </h5>
-
+                                    <h5 class="card-title">
+                                        <p>Enter doctor address in the search bar</p>
+                                        <div id="map"></div>
+                                    </h5>
                                 </div>
                                 <div class="col-3">
                                     <h5 class="card-title">
@@ -110,6 +119,7 @@
                                     <h5 class="card-title">
                                         <%= patients.docDrops %>
                                     </h5>
+
                                     <h5 class="card-title">
                                         <% patients.image.forEach( img => { %>
                                             <img src="<%= img %>" width='300' style='border: 5px solid rgb(189, 45, 45)'>
@@ -126,6 +136,7 @@
                                 <a href=" " class="btn btn-primary fa fa-trash ">Delete</a>
 
                             </div>
+
                         </div>
                         <div class="card-footer text-muted ">
                             <h6 class="post-time text-center ">
@@ -135,5 +146,37 @@
 
                         </div>
                     </div>
+
+                    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+                    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css">
+
+                    <!-- Promise polyfill script is required -->
+                    <!-- to use Mapbox GL Geocoder in IE 11. -->
+                    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+
+
+
+                    <script>
+                        mapboxgl.accessToken = 'pk.eyJ1IjoiY29kZXJjaGljayIsImEiOiJja3BuYndoMmgwMDZjMnZwZG96ajc5a2I5In0.zhG5wSi5rbgl3iYlw-202g';
+                        var map = new mapboxgl.Map({
+                            container: 'map',
+                            style: 'mapbox://styles/mapbox/streets-v11',
+                            center: [-73.889504, 40.698867],
+                            zoom: 13
+                        });
+
+                        // Add the control to the map.
+                        map.addControl(
+                            new MapboxGeocoder({
+                                accessToken: mapboxgl.accessToken,
+                                mapboxgl: mapboxgl
+                            })
+                        );
+                    </script>
+
+                    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+                    <script src="../magnific-popup/jquery.magnific-popup.js"></script>
+                    <script type="text/javascript" src="../magnific-popup/magnific.js"></script>
                     <%- include('partials/footer') -%>
         </body>

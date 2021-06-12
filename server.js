@@ -6,12 +6,14 @@ const MongoStore = require('connect-mongo')(session);
 const methodOverride = require('method-override');
 const flash = require('express-flash');
 const logger = require('morgan');
+const axios = require('axios');
+var $ = require('jQuery');
 const connectDB = require('./config/database');
 const mainRoutes = require('./routes/main');
 const patientRoutes = require('./routes/patients');
 const feedRoutes = require('./routes/feed');
 const patientPageRoutes = require("./routes/patientsPage");
-const axios = require('axios');
+
 
 const app = express();
 //const cors = require('cors');
@@ -70,8 +72,8 @@ app.use("/", mainRoutes)
 app.use("/patients", patientRoutes)
 app.use("/patientsPage", patientPageRoutes);
 app.use("/feed", feedRoutes)
-
-//Server Running
+app.use("/reminder", reminderRoutes)
+    //Server Running
 
 app.listen(process.env.PORT || 5000, function() {
 
