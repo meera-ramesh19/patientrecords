@@ -8,7 +8,8 @@ module.exports = {
         //     const patient = await Patient.findById(req.params.id)
         //     const userN = await User.findById(patient.userId)
         //         // console.log(userN)
-        //     res.render('patientsPage.ejs', { patients: patient, moment: moment, user: req.user, creator: userN })
-        // } catch (err) { console.log(err) }
+        res.render('locationOnMap.ejs')
+            //, { patients: patient, moment: moment, user: req.user, creator: userN })
+            // } catch (err) { console.log(err) }
     }
 }
