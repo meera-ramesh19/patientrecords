@@ -226,7 +226,15 @@ Listing 6. passenger positioning Recovery
   res.end();
   });});}).listen(1345, '0.0.0.0');
   console.log('Server running at http00.0.0.1:1345:'); 
-Now let's return to the Google Maps API to display the values stored in MongoDB. In a new page will add the same scripts shown in Listing 1. Further, as mentioned in the code in Listing 7, we create a Map object, which is the most basic value for the Google Maps API. This map has properties like the kind that will be a ROADMAP (a road map like the standard Google Maps), and we will shut down the possibility for the user to modify the map type in MapTypeControl: false. To add the positions of each passenger on the map we will use an object of type Marker provided by Google Maps API. Each marker will get the latitude and longitude and display the passenger's name.
+Now let's return to the Google Maps API to display the values stored in MongoDB. In a new page will add the same scripts shown in Listing 1. 
+Further, as mentioned in the code in Listing 7, we create a Map object,
+ which is the most basic value for the Google Maps API. 
+ This map has properties like the kind that will be a ROADMAP 
+ (a road map like the standard Google Maps), 
+ and we will shut down the possibility for the user to modify the map
+  type in MapTypeControl: false. To add the positions of each passenger on the map 
+  we will use an object of type Marker provided by Google Maps API.
+   Each marker will get the latitude and longitude and display the passenger's name.
 
 Listing 7. Presentation of positions in Google Maps
   <!DOCTYPE html>

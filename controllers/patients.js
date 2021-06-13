@@ -67,18 +67,18 @@ module.exports = {
             fileErrors.push({ msg: "FollowUpDate cannot be earlier than VisitDate" })
 
         }
-        if (req.file.size > 1024 * 1024 * 3)
-            fileErrors.push({ msg: "Uploaded file is larger than 3 MB" });
 
-        if (!(/jpeg|jpg|png|gif/.test(
-                path.extname(req.file.originalname).toLowerCase()
-            ) && /jpeg|jpg|png|gif/.test(req.file.mimetype)))
-            fileErrors.push({ msg: "Only jpeg, jpg, png and gif allowed" });
 
-        if (fileErrors.length) {
-            req.flash("errors", fileErrors);
-            return res.redirect("/login");
-        }
+        // if (!(/jpeg|jpg|png|gif/.test(
+        //         path.extname(req.file.originalname).toLowerCase()
+        //     ) && /jpeg|jpg|png|gif/.test(req.file.mimetype)))
+        //     fileErrors.push({ msg: "Only jpeg, jpg, png and gif allowed" });
+
+        // if (fileErrors.length) {
+        //     req.flash("errors", fileErrors);
+        //     return res.redirect("/login");
+        // }
+
         // function formatSocialSecurity(ssnNumber) {
         //     val = val.replace(/\D/g, '');
         //     val = val.replace(/^(\d{3})/, '$1-');
@@ -111,21 +111,26 @@ module.exports = {
             }
             console.log(params)
 
-            var lat = "";
-            var lon = ""
-            console.log(lat, lon)
+            var latitude = ""
+            var longitude = ""
+                // console.log(lat, lon)
             async function getlatlon() {
-                const res = await axios.get('https://app.geocodeapi.io/api/v1/search', { params })
-                    // const apiResponse = res.json()
-                return res
+                const response = await axios.get('https://app.geocodeapi.io/api/v1/search', { params })
+                latitude = response.data.features[0].geometry.coordinates[0]
+
+                longitude = response.data.features[0].geometry.coordinates[1]
             }
 
-            const result = getlatlon()
+
+            const rests = await getlatlon()
                 .then(data => {
-                    console.log(data)
+                    // console.log(data)
                     return data
                 })
+            console.log(latitude, longitude)
 
+
+            // console.log(rests)
             // axios.get('https://app.geocodeapi.io/api/v1/search', { params })
             //     .then(response => {
             //         const apiResponse = response.data
@@ -175,8 +180,8 @@ module.exports = {
                 docCream: req.body.docCream,
                 docDrops: req.body.docDrops,
                 image: urls,
-                // lat: latitude,
-                // lon: longitude,
+                lat: latitude,
+                lon: longitude,
                 user: req.user,
                 cloudinary_id: birthToDate,
                 files: req.files,

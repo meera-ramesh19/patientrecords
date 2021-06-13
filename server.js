@@ -13,7 +13,8 @@ const mainRoutes = require('./routes/main');
 const patientRoutes = require('./routes/patients');
 const feedRoutes = require('./routes/feed');
 const patientPageRoutes = require("./routes/patientsPage");
-
+const smsReminderRoutes = require("./routes/smsReminder")
+const locationOnMap = require("./routes/locationOnMap")
 
 const app = express();
 //const cors = require('cors');
@@ -72,7 +73,8 @@ app.use("/", mainRoutes)
 app.use("/patients", patientRoutes)
 app.use("/patientsPage", patientPageRoutes);
 app.use("/feed", feedRoutes)
-app.use("/reminder", reminderRoutes)
+app.use("/smsReminder", smsReminderRoutes)
+app.use("/locationOnMap", locationOnMapRoutes)
     //Server Running
 
 app.listen(process.env.PORT || 5000, function() {
