@@ -7,13 +7,14 @@ const methodOverride = require('method-override');
 const flash = require('express-flash');
 const logger = require('morgan');
 const axios = require('axios');
+const client = require('twilio');
 var $ = require('jQuery');
 const connectDB = require('./config/database');
 const mainRoutes = require('./routes/main');
 const patientRoutes = require('./routes/patients');
 const feedRoutes = require('./routes/feed');
 const patientPageRoutes = require('./routes/patientsPage');
-const smsReminderRoutes = require('./routes/smsReminder');
+// const smsReminderRoutes = require('./routes/smsReminder');
 const locationOnMapRoutes = require("./routes/locationOnMap");
 
 const app = express();
@@ -73,7 +74,7 @@ app.use("/", mainRoutes);
 app.use("/patients", patientRoutes);
 app.use("/patientsPage", patientPageRoutes);
 app.use("/feed", feedRoutes);
-app.use("/smsReminder", smsReminderRoutes);
+// app.use("/smsReminder", smsReminderRoutes);
 app.use("/locationOnMap", locationOnMapRoutes);
 //Server Running
 

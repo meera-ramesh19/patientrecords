@@ -29,16 +29,17 @@ module.exports = {
 
         console.log(req)
 
-        const address = []
-        address.push({
+        const residence = []
+        var address = {}
+        residence.push({
             street: req.body.street,
             city: req.body.city,
             state: req.body.state,
             country: req.body.country,
             pincode: req.body.pincode
         })
-        const newaddress = Object.assign({}, ...address);
-
+        var newaddress = Object.assign({}, ...residence);
+        address = newaddress
         const fileErrors = [];
         // var address = req.body.docAdd
 
@@ -154,12 +155,13 @@ module.exports = {
                 patComments: req.body.patComments,
                 patAilment: req.body.patAilment,
                 // patReviews: req.body.patReviews,
-                docAdd: address,
+                docAdd: residence,
                 // street: req.body.street,
                 // city: req.body.city,
                 // state: req.body.state,
                 // country: req.body.country,
                 // pincode: req.body.pincode,
+                daddress: address,
                 patPharmacyName: req.body.patPharmacyName,
                 docName: req.body.docName,
                 // docStreet: req.body.docStreet,
@@ -185,6 +187,7 @@ module.exports = {
                 user: req.user,
                 cloudinary_id: birthToDate,
                 files: req.files,
+
 
             });
 

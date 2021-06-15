@@ -52,6 +52,7 @@
 
                 <div class="container">
 
+
                     <div class="card" style="max:width:640px">
                         <div class="card-header text-center">
                             <h5 class="card-title">
@@ -99,7 +100,7 @@
                                         <%= patients.patAilment %>
                                     </h5>
                                     <h5 class="card-title">
-                                        <p>Enter doctor address in the search bar</p>
+                                        <!-- <p>Enter doctor address in the search bar</p> -->
                                         <div id="map"></div>
                                     </h5>
                                 </div>
@@ -119,7 +120,26 @@
                                     <h5 class="card-title">
                                         <%= patients.docDrops %>
                                     </h5>
+                                    <h5 class="card-title">
+                                        <!-- <%= patients.lat %>
+                                            <%= patients.lon %> -->
 
+                                        <!-- <div id="ntos" data-test2=<%=lon %>>
+                                                    <%- JSON.stringify(lon)%>
+                                                </div>
+                                                <span id="etow" data-test1=<%=lat %>>
+                                                    <%- JSON.stringify(lat)%>
+
+                                                </div> -->
+                                        <span style="display:none;" id="etow">
+                                                    <%- JSON.stringify(lat)%>
+
+                                                </span >
+                                                <span  style="display:none;"id="ntos">
+                                                    <%- JSON.stringify(lon)%>
+                                                </span>
+
+                                    </h5>
                                     <h5 class="card-title">
                                         <% patients.image.forEach( img => { %>
                                             <img src="<%= img %>" width='300' style='border: 5px solid rgb(189, 45, 45)'>
@@ -155,28 +175,56 @@
                     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
                     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
 
-
-
+                    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
                     <script>
+                        var test2 = JSON.parse($(ntos).text())
+                        console.log("test=", test2)
+                        var test1 = JSON.parse($(etow).text())
+                        console.log(test1)
+                            // var newlat = document.getElementById('etow').dataset.test1;
+
+                        // var newlon = document.getElementById('ntos').dataset.test2;
+                        // console.log(newlat, newlon)
+                        // let htmllon = ejs.render('<%= lon %>')
+                        // console.log(htmllat)
+                        // let htmllat = ejs.render(' <%= lat %>')
+                        // console.log(htmllon)
+
+                        var newcoord = [test1, test2]
                         mapboxgl.accessToken = 'pk.eyJ1IjoiY29kZXJjaGljayIsImEiOiJja3BuYndoMmgwMDZjMnZwZG96ajc5a2I5In0.zhG5wSi5rbgl3iYlw-202g';
                         var map = new mapboxgl.Map({
                             container: 'map',
                             style: 'mapbox://styles/mapbox/streets-v11',
-                            center: [-73.889504, 40.698867],
-                            zoom: 13
+                            center: [-73.890676, 40.74386],
+                            zoom: 8
                         });
 
-                        // Add the control to the map.
-                        map.addControl(
-                            new MapboxGeocoder({
-                                accessToken: mapboxgl.accessToken,
-                                mapboxgl: mapboxgl
-                            })
-                        );
-                    </script>
+                        // Create a default Marker and add it to the map.
+                        // var marker1 = new mapboxgl.Marker()
+                        // .setLngLat(newcoord)
+                        //     .addTo(map);
 
+                        // Create a default Marker, colored black, rotated 45 degrees.
+                        var marker2 = new mapboxgl.Marker({
+                                color: 'black',
+                                rotation: 45
+                            })
+                            .setLngLat(newcoord)
+                            .addTo(map)
+
+                        // Add zoom and rotation controls to the map.
+                        map.addControl(new mapboxgl.NavigationControl());
+                    </script>
                     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-                    <script src="../magnific-popup/jquery.magnific-popup.js"></script>
-                    <script type="text/javascript" src="../magnific-popup/magnific.js"></script>
+
+                    <!-- <script src="../magnific-popup/jquery.magnific-popup.js"></script>
+                    <script type="text/javascript" src="../magnific-popup/magnific.js"></script>-->
+
+
+                    </script>
+                    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+                    <!-- <script src="../magnific-popup/jquery.magnific-popup.js"></script>
+                    <script type="text/javascript" src="../magnific-popup/magnific.js"></script>-->
                     <%- include('partials/footer') -%>
         </body>

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema.Types;
 const axios = require('axios');
+const geoCoder = require('../utils/geocoder');
 
 
 const PatientSchema = new mongoose.Schema({
@@ -57,10 +58,8 @@ const PatientSchema = new mongoose.Schema({
         }
 
     }],
-    // docAdd: {
-    //     type: String,
-    //     required: true,
-    // },
+
+
     patPharmacyName: {
         type: String,
         required: true,
@@ -136,6 +135,7 @@ const PatientSchema = new mongoose.Schema({
         required: false,
         // default: 'Unknown',
     },
+
     lat: {
         type: String
     },
@@ -143,7 +143,21 @@ const PatientSchema = new mongoose.Schema({
 
         type: String
     },
-
+    daddress: {
+        type: String,
+        required: [true, 'Please add an address']
+    },
+    location: {
+        type: {
+            type: String,
+            enum: ['Point']
+        },
+        coordinates: {
+            type: [Number],
+            index: '2dsphere'
+        },
+        formattedAddress: String
+    },
     // likes: [{ type: ObjectId, ref: "User" }],
 
     // dislikes: [{ type: ObjectId, ref: "User" }],
@@ -158,17 +172,7 @@ const PatientSchema = new mongoose.Schema({
     //         message: "{VALUE} is not an integer value."
     //     }
     // }],
-    // location: {
-    //     type: {
-    //         type: String,
-    //         enum: ['Point']
-    //     },
-    //     coordinates: {
-    //         type: [Number],
-    //         index: '2dsphere'
-    //     },
 
-    // },
     // postedBy: {
     //     // type: { user: User.UserSchema },
     //     type: mongoose.Schema.Types.ObjectId,
@@ -195,7 +199,18 @@ const PatientSchema = new mongoose.Schema({
     },
 }, { timestamps: true });
 
+PatientSchema.pre('save', async function(next) {
+    const loc = await geoCoder.geocode(this.address);
+    this.location = {
+        type: 'Point',
+        coordinates: [loc[0].longitude, loc[0].latitude],
+        formattedAddress: loc[0].formattedAddress
+    };
 
+    // Do not save address
+    this.address = undefined;
+    next();
+});
 
 
 module.exports = mongoose.model('Patient', PatientSchema);
