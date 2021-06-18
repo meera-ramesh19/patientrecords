@@ -7,34 +7,31 @@
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.js"></script>
-    <style>
-        /* body {
-            margin: 0;
-            padding: 0;
-        } */
-        
-        #outerdiv {
-            border: none;
-            width: 99%;
-            height: 99%;
-            position: fixed;
-            text-align: center;
-        }
-        
-        #map {
-            border: 1px solid red;
-            width: 100%;
-            height: 100%;
-            top: 20;
-            margin: 0px auto;
-            display: inline-block;
-            /* position: absolute;
-            top: 20;
-            bottom: 10;
-            margin: 0 auto;
-            width: 100%; */
-        }
-    </style>
+
+    <%- include('partials/header') -%>
+        <%- include('partials/navbar') -%>
+            <style>
+                /* body { margin: 0; padding: 0; } */
+                
+                #outerdiv {
+                    border: none;
+                    width: 99%;
+                    height: 99%;
+                    position: fixed;
+                    text-align: center;
+                }
+                
+                #map {
+                    border: 1px solid red;
+                    width: 100%;
+                    height: 100%;
+                    top: 20;
+                    margin: 0px auto;
+                    display: inline-block;
+                    /* position: absolute;
+        top: 20; bottom: 10; margin: 0 auto; width: 100%; */
+                }
+            </style>
 </head>
 
 <body>
@@ -47,7 +44,7 @@
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
     <div id="outerdiv">
-        <div id="map" style="width:1200px;height:600px;"></div>
+        <div id="map" style="width:1200px;height:500px;"></div>
     </div>
     <script>
         mapboxgl.accessToken = 'pk.eyJ1IjoiY29kZXJjaGljayIsImEiOiJja3BuYndoMmgwMDZjMnZwZG96ajc5a2I5In0.zhG5wSi5rbgl3iYlw-202g';
@@ -68,7 +65,7 @@
         // Add zoom and rotation controls to the map.
         map.addControl(new mapboxgl.NavigationControl());
     </script>
-
+    <%- include('partials/footer') -%>
 </body>
 
 </html>

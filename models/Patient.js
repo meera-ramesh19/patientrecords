@@ -24,6 +24,10 @@ const PatientSchema = new mongoose.Schema({
         required: true,
         // default: 'Unknown',
     },
+    patPhonenum: {
+        type: String,
+        required: true,
+    },
     patAilment: {
         type: String,
         required: true,
@@ -161,17 +165,17 @@ const PatientSchema = new mongoose.Schema({
     // likes: [{ type: ObjectId, ref: "User" }],
 
     // dislikes: [{ type: ObjectId, ref: "User" }],
-    // patReviews: [{
-    //     type: Number,
-    //     min: 1,
-    //     max: 5,
-    //     ref: "User",
-    //     validate: {
-    //         // validator accepts a function definition which it uses for validation
-    //         validator: Number.isInteger,
-    //         message: "{VALUE} is not an integer value."
-    //     }
-    // }],
+    patReviews: {
+        type: Number,
+        min: 1,
+        max: 5,
+        ref: "User",
+        validate: {
+            // validator accepts a function definition which it uses for validation
+            validator: Number.isInteger,
+            message: "{VALUE} is not an integer value."
+        }
+    },
 
     // postedBy: {
     //     // type: { user: User.UserSchema },
@@ -181,6 +185,7 @@ const PatientSchema = new mongoose.Schema({
     //     unique: false,
     //     sparse: true,
     // },
+
     image: {
         type: [String],
         required: false,

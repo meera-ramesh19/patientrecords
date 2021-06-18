@@ -1,0 +1,19 @@
+<%- include ('partials/layout') -%>
+
+    <link rel='stylesheet' type='text/css' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.14.30/css/bootstrap-datetimepicker.min.css'>
+    <link rel='stylesheet' type='text/css' href='https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css'>
+
+    <body>
+        <h2> Create New Appointment</h2>
+        <%- include ('form') -%>
+            <form id="formAppointment" class="form-horizontal col-lg-5" name="formAppointment" method="POST" action="'/appointments/' + appointment.id + '/edit'" data-parsley-validate=''>
+                <div class="form-group col-sm-offset-4 col-sm-8">
+                    <button class="btn btn-default" type="submit">Save</button>
+                </div>
+            </form>
+            <script src='https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.min.js'></script>
+            <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js'></script>
+            <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.14.30/js/bootstrap-datetimepicker.min.js'></script>
+            <script src='/js/datetime-picker.js'></script>
+
+    </body>

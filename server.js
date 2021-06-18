@@ -7,15 +7,19 @@ const methodOverride = require('method-override');
 const flash = require('express-flash');
 const logger = require('morgan');
 const axios = require('axios');
-const client = require('twilio');
 var $ = require('jQuery');
 const connectDB = require('./config/database');
 const mainRoutes = require('./routes/main');
 const patientRoutes = require('./routes/patients');
 const feedRoutes = require('./routes/feed');
+var messagebird = require('messagebird');
 const patientPageRoutes = require('./routes/patientsPage');
-// const smsReminderRoutes = require('./routes/smsReminder');
+const appointmentRoutes = require('./routes/appointments');
 const locationOnMapRoutes = require("./routes/locationOnMap");
+// const scheduler = require('./src/scheduler');
+var MESSAGEAPI = process.env.MESSAGEBIRD_API_KEY;
+var ACCOUNTSID = process.env.TWILIO_ACCOUNT_ID;
+var AUTHTOKEN = process.env.TWILIO_AUTH_TOKEN;
 
 const app = express();
 //const cors = require('cors');
@@ -32,7 +36,7 @@ require("./config/passport")(passport);
 connectDB();
 
 // Load and initialize MesageBird SDK
-//var messagebird = require('messagebird')(process.env.MESSAGEBIRD_API_KEY);
+var AppointmentDatabase = []
 
 //Using EJS for views
 app.set("view engine", "ejs");
@@ -74,8 +78,16 @@ app.use("/", mainRoutes);
 app.use("/patients", patientRoutes);
 app.use("/patientsPage", patientPageRoutes);
 app.use("/feed", feedRoutes);
-// app.use("/smsReminder", smsReminderRoutes);
+app.use("/appointmentPage", apppointmentRoutes);
+app.use("/allAppointments", appointmentRoutes);
+app.use("/createAppointments", appointmentRoutes);
+app.use("/:id/edit", appointmentRoutes);
+app.use("/:id/delete", appointmentRoutes);
 app.use("/locationOnMap", locationOnMapRoutes);
+
+//start the scheduler
+// scheduler.start()
+
 //Server Running
 
 app.listen(process.env.PORT || 5000, function() {

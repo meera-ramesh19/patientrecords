@@ -1,0 +1,17 @@
+<%- include ('partials/header') -%>
+    <%- include ('partials/navbar') -%>
+        <div class="container">
+            <div class="userinfo">
+                <p>Welcome to Appointments Page
+                    <strong>User Name</strong>:
+                    <%= user.userName %>
+                </p>
+                <p><strong>Email</strong>:
+                    <%= user.email %>
+                </p>
+                <div class="user-btn">
+                    <a href="/logout" class="btn btn-primary">Logout</a>
+                    <button class="btn btn-primary" onclick="schdeuler.start()">Ready to schedule Appointments</button>
+                </div>
+            </div>
+            <%- include ('partials/footer') -%>
