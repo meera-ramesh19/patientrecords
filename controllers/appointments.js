@@ -68,12 +68,16 @@ module.exports = {
 
     editReminders: async(req, res) => {
         const id = req.params.id;
-        const appointment = await Appointment.findOne({ _id: id })
+        try {
+            const appointment = await Appointment.findOne({ _id: id })
 
-        res.render('book.ejs', {
-            timeZones: getTimeZones(),
-            appointment: appointment,
-        });
+            res.render('book.ejs', {
+                timeZones: getTimeZones(),
+                appointment: appointment,
+            });
+        } catch (err) {
+            console.error(err)
+        }
     },
     changedReminders: async(req, res) => {
         // const id = req.params.id;
@@ -90,7 +94,7 @@ module.exports = {
         const timeZone = req.body.timeZone;
         const time = moment(req.body.time, 'YYYY-MM-DD hh:mma');
 
-        const appointment = await Appointment.findOne({ _id: id }) {
+        const appointment = await Appointment.findOneByIdandUpdate({ _id: id }) {
             name = name;
             doctorName = doctorName;
             phoneNumber = phoneNumber;
@@ -100,10 +104,20 @@ module.exports = {
 
             appointment.save()
             res.redirect('appointments.ejs');
+        } catch (err) {
+            console.error(err)
+        }
+    },
+    removeReminders: async(req, res) => {
+
+        try {
+            const id = req.params.id;
+
+            const appointment = await Appointment.remove({ _id: id })
+            res.redirect('appointments.ejs');
+        } catch (err) {
+            console.error(err)
         }
     },
 
-    deleteReminders: async(req, res) => {
-
-    }
 }

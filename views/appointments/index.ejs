@@ -1,0 +1,49 @@
+<%-include ('partials/layout') -%>
+
+    <body>
+
+
+        <table>
+            <thead>
+                <tr>
+                    <th id="name">Name</th>
+                    <th id="phoneNumber"> Phone Number</th>
+                    <th id="docName">Doctor Name</th>
+                    <th id="time">Appointement Time</th>
+                    <th id="notify">Notiifcation Time</th>
+                    <th id="timeZone">Time Zone</th>
+                    <th id="actions">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <%= appointments.forEach(el => { %>
+                    <tr>
+                        <td>
+                            <%=el.name%>
+                        </td>
+                        <td>
+                            <%=el.phoneNumber%>
+                        </td>
+                        <td>
+                            <%=el.doctorName%>
+                        </td>
+                        <td>
+                            <%=moment(el.time).format('YYYY-MM-DD hh:mma')></td>
+                <td><%= moment(el.time).subtract(el.notification, 'minutes').format('YYYY-MM-DD hh:mma')%></td>
+                        <td>
+                            <%=el.timeZone %>
+                        </td>
+                    </tr>
+
+                    <% }) %>
+                        <td>
+                            <a class="btn btn-default btn-sm" href='"/appointments" + appointment.id + "/edit"'>Edit</a>
+                        </td>
+                        <td>
+                            <form action='"/appointments/"+ appointment.id + "/delete"' method="POST" class=>
+                                <button class="btn btn-danger btn-sm">Delete</button></form>
+                        </td>
+            </tbody>
+    </body>
+    <%- include('partials/footer') -%>

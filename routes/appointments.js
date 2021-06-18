@@ -8,6 +8,6 @@ router.post("/createAppointments", appointmentsController.bookReminders);
 router.get("/appointmentPage", appointmentsController.singleReminders);
 router.get("/allAppointments/:id/edit", appointmentsController.editReminders);
 router.post("/allAppointments/:id/edit", appointmentsController.changedReminders);
-router.post("/allAppointments/:id/edit", appointmentsController.deleteReminders);
+router.post("/allAppointments/:id/edit", appointmentsController.removeReminders);
 
 module.exports = router;
