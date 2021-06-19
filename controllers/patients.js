@@ -219,7 +219,7 @@ module.exports = {
         const { id } = req.params
         try {
             const patient = await Patient.findById(id).populate('user')
-            res.render('updatepat.ejs', { patient, user: req.user, leaflet: true })
+            res.render('update.ejs', { patient, user: req.user, leaflet: true })
         } catch (e) {
             console.error(e)
         }

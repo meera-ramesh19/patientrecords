@@ -1,5 +1,5 @@
 <%- include ('partials/header') -%>
-    <%- include ('partials/navbar') -%>
+    <%- include ('partials/layout') -%>
         <div class="container">
             <div class="userinfo">
                 <p>Welcome to Appointments Page
@@ -23,7 +23,7 @@
                     </thead>
                     <tbody>
 
-                        <%= appointments.forEach(el => { %>
+                        <%= appointments.forEach(el => {%>
                             <tr>
                                 <td>
                                     <%=el.name%>
@@ -35,8 +35,11 @@
                                     <%=el.doctorName%>
                                 </td>
                                 <td>
-                                    <%=moment(el.time).format('YYYY-MM-DD hh:mma')></td>
-                <td><%= moment(el.time).subtract(el.notification, 'minutes').format('YYYY-MM-DD hh:mma')%></td>
+                                    <%=moment(el.time).format('YYYY-MM-DD hh:mma')%>
+                                </td>
+                                <td>
+                                    <%= moment(el.time).subtract(el.notification, 'minutes').format('YYYY-MM-DD hh:mma')%>
+                                </td>
                                 <td>
                                     <%=el.timeZone %>
                                 </td>
@@ -44,7 +47,7 @@
 
                             <% }) %>
                                 <td>
-                                    <a class="btn btn-default btn-sm" href='"/appointments" + appointment.id + "/edit"'>Edit</a>
+                                    <a class="btn btn-default btn-sm" href='"/appointments/" + appointment.id + "/edit"'>Edit</a>
                                 </td>
                                 <td>
                                     <form action='"/appointments/"+ appointment.id + "/delete"' method="POST" class=>
@@ -53,7 +56,7 @@
                     </tbody>
                     <div class="user-btn">
                         <a href="/logout" class="btn btn-primary">Logout</a>
-                        <button class="btn btn-primary" onclick="schdeuler.start()">Ready to schedule Appointments</button>
+                        <button class="btn btn-primary">Ready to schedule Appointments</button>
                     </div>
             </div>
             <%- include ('partials/footer') -%>

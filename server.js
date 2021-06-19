@@ -15,11 +15,15 @@ const feedRoutes = require('./routes/feed');
 var messagebird = require('messagebird');
 const patientPageRoutes = require('./routes/patientsPage');
 const appointmentRoutes = require('./routes/appointments');
+const appointmentPageRoutes = require('./routes/appointmentPage');
 const locationOnMapRoutes = require("./routes/locationOnMap");
 // const scheduler = require('./src/scheduler');
-var MESSAGEAPI = process.env.MESSAGEBIRD_API_KEY;
-var ACCOUNTSID = process.env.TWILIO_ACCOUNT_ID;
-var AUTHTOKEN = process.env.TWILIO_AUTH_TOKEN;
+const twilio = require('twilio');
+const cfg = {};
+const MESSAGEAPI = process.env.MESSAGEBIRD_API_KEY;
+cfg.twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
+cfg.twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
+
 
 const app = express();
 //const cors = require('cors');
@@ -78,11 +82,8 @@ app.use("/", mainRoutes);
 app.use("/patients", patientRoutes);
 app.use("/patientsPage", patientPageRoutes);
 app.use("/feed", feedRoutes);
-app.use("/appointmentPage", apppointmentRoutes);
-app.use("/allAppointments", appointmentRoutes);
-app.use("/createAppointments", appointmentRoutes);
-app.use("/:id/edit", appointmentRoutes);
-app.use("/:id/delete", appointmentRoutes);
+app.use("/appointmentPage", appointmentPageRoutes);
+app.use("/appointments", appointmentRoutes);
 app.use("/locationOnMap", locationOnMapRoutes);
 
 //start the scheduler

@@ -8,7 +8,7 @@ const upload = require("../middleware/multer");
 
 router.get("/", ensureAuth, patientsController.getProfile);
 router.post("/createPatient", upload.array('photos', 10), patientsController.createPatient);
-router.get("/:id", patientsController.getPatient);
+// router.get("/:id", patientsController.getPatient);
 
 
 module.exports = router;

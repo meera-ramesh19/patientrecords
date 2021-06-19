@@ -6,20 +6,19 @@ const axios = require('axios');
 const Appointment = require('../models/Appointment');
 
 module.exports = {
+    getAppointments: async(req, res) => {
 
-    displayAllReminders: async(req, res) => {
-        const getTimeZones = function() {
-            return momentTimeZone.tz.names();
-        };
-        var timeZones = getTimeZones();
-        try {
-            const apptItems = await Appointment.find({ userId: req.user.id });
-            const paitentItems = await Patient.find({ userId: req.user.id });
-            res.render('appointments.ejs', { appointments: apptItems, patient: patientItems, user: req.user });
-        } catch (err) {
-            console.error(err)
-        }
+        //const patientItems = await Patient.find({ userId: req.user.id })
+
+        const apptItems = await Appointment.find({ _id: req.params.id });
+        //.sort({ createdAt: 'desc' }).lean();
+        res.render("appointments.ejs", { appointments: apptItems });
+
+        // patient: patientItems,
+        // user: req.user
+
     },
+
     bookReminders: async(req, res) => {
         const getTimeZones = function() {
             return momentTimeZone.tz.names();
@@ -51,59 +50,61 @@ module.exports = {
         }
 
     },
-    singleReminders: async(req, res) => {
-        try {
-            const id = req.params.id;
-            const appointment = await Appointment.findOne({ _id: id })
 
-            res.render('appointmentsPage.ejs', {
-                timeZones: getTimeZones(),
-                appointment: appointment,
-            });
-        } catch (err) {
-            console.error(err)
-        }
-
-    },
-
-    editReminders: async(req, res) => {
+    getReminders: async(req, res) => {
         const id = req.params.id;
         try {
-            const appointment = await Appointment.findOne({ _id: id })
+            const appointment = await Appointment.findById(id).populate('user')
+                // .populate('patient')
 
             res.render('book.ejs', {
                 timeZones: getTimeZones(),
                 appointment: appointment,
+                user: req.user,
+                // patient: req.patient
             });
         } catch (err) {
             console.error(err)
         }
     },
-    changedReminders: async(req, res) => {
+    updateReminders: async(req, res) => {
         // const id = req.params.id;
         // const appointment = await Appointment.findOne({ _id: id })
 
         // res.render('appointments.ejs', {
         //     timeZones: getTimeZones(),
         //     appointment: appointment,
-        // });  const id = req.params.id;
-        const name = req.body.name;
-        const doctorName = req.body.doctorName;
-        const phoneNumber = req.body.phoneNumber;
-        const notification = req.body.notification;
-        const timeZone = req.body.timeZone;
-        const time = moment(req.body.time, 'YYYY-MM-DD hh:mma');
+        // }); 
 
-        const appointment = await Appointment.findOneByIdandUpdate({ _id: id }) {
-            name = name;
-            doctorName = doctorName;
-            phoneNumber = phoneNumber;
-            notification = Number(notification);
-            timeZone = timeZone;
-            time = time;
+        const id = req.params.id;
+        let modifications = {};
+        modifications.name = req.body.name;
+        modifications.doctorName = req.body.doctorName;
+        modifications.phoneNumber = req.body.phoneNumber;
+        modifications.notification = req.body.notification;
+        modifications.timeZone = req.body.timeZone;
+        modifications.time = moment(req.body.time, 'YYYY-MM-DD hh:mma');
+        const names = req.body.name;
+        // const docName = req.body.doctorName;
+        // const phNumber = req.body.phoneNumber;
+        // const notify = req.body.notification;
+        // const tZone = req.body.timeZone;
+        // const times = moment(req.body.time, 'YYYY-MM-DD hh:mma');
+        try {
+            // const appointment = await Appointment.findOneByIdandUpdate({ id, { $set: modifications }, { new: true } })
+            const appointment = await Appointment.findOneByIdandUpdate({ id }, {
+                    // let name = names,
+                    //     let doctorName = docName,
+                    //         let phoneNumber = phNumber,
+                    //             let notification = Number(notify),
+                    //                 let timeZone = tZone,
+                    //                     let time = times
+                    $set: modifications
+                }, { upsert: true, new: true }
 
-            appointment.save()
-            res.redirect('appointments.ejs');
+            );
+            res.redirect('appointments.ejs', { timeZones: getTimeZones(), appointment: appointment });
+
         } catch (err) {
             console.error(err)
         }
@@ -112,11 +113,14 @@ module.exports = {
 
         try {
             const id = req.params.id;
+            let appointment = await Appointment.findById({ _id: req.params.id });
 
-            const appointment = await Appointment.remove({ _id: id })
-            res.redirect('appointments.ejs');
+            await Appointment.remove({ _id: id })
+            console.log("Deleted Post");
+            res.redirect('/appointments');
         } catch (err) {
             console.error(err)
+            res.redirect("/appointments");
         }
     },
 
