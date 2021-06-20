@@ -1,62 +1,92 @@
 <%- include ('partials/header') -%>
-    <%- include ('partials/layout') -%>
+
+    <body>
         <div class="container">
             <div class="userinfo">
-                <p>Welcome to Appointments Page
-                    <strong>User Name</strong>:
-                    <%= user.userName %>
-                </p>
-                <p><strong>Email</strong>:
+                <p>Welcome to Appointments Page</p>
+                <p> <strong>User Name:
+                
+                <%= user.userName %>
+                    </p>
+                    <p><strong>Email</strong>:
                     <%= user.email %>
                 </p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th id="name">Name</th>
-                            <th id="phoneNumber"> Phone Number</th>
-                            <th id="docName">Doctor Name</th>
-                            <th id="time">Appointement Time</th>
-                            <th id="notify">Notiifcation Time</th>
-                            <th id="timeZone">Time Zone</th>
-                            <th id="actions">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <%= appointments.forEach(el => {%>
-                            <tr>
-                                <td>
-                                    <%=el.name%>
-                                </td>
-                                <td>
-                                    <%=el.phoneNumber%>
-                                </td>
-                                <td>
-                                    <%=el.doctorName%>
-                                </td>
-                                <td>
-                                    <%=moment(el.time).format('YYYY-MM-DD hh:mma')%>
-                                </td>
-                                <td>
-                                    <%= moment(el.time).subtract(el.notification, 'minutes').format('YYYY-MM-DD hh:mma')%>
-                                </td>
-                                <td>
-                                    <%=el.timeZone %>
-                                </td>
-                            </tr>
-
-                            <% }) %>
-                                <td>
-                                    <a class="btn btn-default btn-sm" href='"/appointments/" + appointment.id + "/edit"'>Edit</a>
-                                </td>
-                                <td>
-                                    <form action='"/appointments/"+ appointment.id + "/delete"' method="POST" class=>
-                                        <button class="btn btn-danger btn-sm">Delete</button></form>
-                                </td>
-                    </tbody>
-                    <div class="user-btn">
-                        <a href="/logout" class="btn btn-primary">Logout</a>
-                        <button class="btn btn-primary">Ready to schedule Appointments</button>
-                    </div>
             </div>
-            <%- include ('partials/footer') -%>
+            <div class="user-btn">
+                <a href="/logout" class="btn btn-primary">Logout</a>
+                <!-- <a href="/bookAppointments" class=" btn btn-primary">Ready to schedule Appointments</a> -->
+            </div>
+            <br>
+            <!-- <%- include ( 'partials/layout') -%> -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+
+                    <a class="navbar-brand" href="#">Appointment Reminders</a>
+
+                    <!-- <div> -->
+                    <ul class="navbar-nav">
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/appointments">Appointment Home</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/appointments/create">New appointment</a></li>
+                        <!-- <li class="nav-item"><a class="nav-link" href="/appointments/bookAppointments">New appointment</a></li> -->
+                    </ul>
+                    <!-- </div> -->
+                </div>
+
+            </nav>
+            <table class="table" style="width:1400px;margin:0 auto">
+                <thead>
+                    <tr>
+                        <th id="name">Name</th>
+                        <th id="phoneNumber"> Phone Number</th>
+                        <th id="docName">Doctor Name</th>
+                        <th id="time">Appointment Time</th>
+                        <th id="notify">Notiifcation Time</th>
+                        <th id="timeZone">Time Zone</th>
+                        <th id="actions">Actions</th>
+                        <th id=""></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <%  appointments.forEach(el => {%>
+                        <tr>
+                            <td>
+                                <%= el.name%>
+                            </td>
+                            <td>
+                                <%= el.phoneNumber%>
+                            </td>
+                            <td>
+                                <%= el.doctorName%>
+                            </td>
+                            <td>
+                                <%= moment(el.time).format('YYYY-MM-DD hh:mma')%>
+                            </td>
+                            <td>
+                                <%= moment(el.time).subtract(el.notification, 'minutes').format('YYYY-MM-DD hh:mma')%>
+                            </td>
+                            <td>
+                                <%=el.timeZone %>
+                            </td>
+
+                            <td>
+                                <a class=" btn btn-default btn-sm " href='"/appointments/ " + appointment.id + "/edit "'>Edit</a>
+                            </td>
+                            <td>
+                                <form action='"/appointments/ "+ appointment.id + "/delete "' method="POST " class=>
+                                    <button class="btn btn-danger btn-sm ">Delete</button></form>
+                            </td>
+                            <% }) %>
+                        </tr>
+
+
+                </tbody>
+
+        </div>
+
+        <!-- <%- include ( 'partials/footer') -%> -->
+
+    </body>

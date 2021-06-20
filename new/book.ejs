@@ -1,0 +1,58 @@
+<%- include ('partials/layout') -%>
+    <link rel='stylesheet' type='text/css' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.14.30/css/bootstrap-datetimepicker.min.css'>
+    <link rel='stylesheet' type='text/css' href='https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css'>
+
+    <body>
+        <h2> Create New Appointment</h2>
+        <form class="apptform container-overflow-hidden needs-validation" action="/appointments" autocomplete="off" id="add-appointments" method="POST">
+
+            <div class="form-group ">
+                <label class="col-sm-4 control-label " for="inputName ">Name</label>
+                <div class="col-sm-8 ">
+                    <input type="text " name="name " class="form-control " data-parsley-maxlength="20 " value="<%=appointment.name%>" required id="inputName" placeholder="Name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="inputPhoneNumber">Phone Number</label>
+                <div class="col-sm-8">
+                    <input type="number" name="inputPhoneNumber" class="form-control" required id="inputPhoneNumber" placeholder="PhoneNumber" value="<%=appointment.phoneNumber%>" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="time">Appointment Date</label>
+                <div class="col-sm-8">
+                    <input type="text" name="time" class="form-control" required id="time" placeholder="Pick a date" value="<%=moment(appointment.time).format('MM-DD-YYYY hh:mma')%>" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="selectNotification">Notification Time</label>
+                <div class=" col-sm-8">
+                    <select type="text" name="notification" class="form-control" required id="selectedDelta" placeholder="Pick a date " value="<%=appointment.notification%>" required>
+          <option selected="<%= appointment.notification===''%>value=''">Select a time</option>
+           <option selected="<%= appointment.notification===''%>value=''">Select a time</option>
+          <option selected="<%= appointment.notification===''%>value='30'">30 minutes</option>
+          <option selected="<%= appointment.notification===''%>value='60'">60 minutes</option>
+          <option selected="<%= appointment.notification===''%>value='90'">90 minutes</option>
+          <option selected="<%= appointment.notification===''%>value='180'">180 minutes</option>
+          <option selected="<%= appointment.notification===''%>value='1day'">Select a time</option>
+            </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="selectTimeZone">Time Zone</label>
+                <div class="col-sm-8">
+                    <select type="text" name="timeZone" class="form-control" required id="selectTimeZone" placeholder="Pick a date " value="<%=appointment.timeZone%>" required>
+            <% timeZones.forEach(zone=>{%>
+        <option selected="<%=zone%>===<%=appointment.timeZone%>" value="<%=zone%>" <%=zone%></option>
+           <% })%>
+        </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.min.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.14.30/js/bootstrap-datetimepicker.min.js'></script>
+        <script src='/js/datetime-picker.js'></script>
+
+    </body>

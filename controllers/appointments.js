@@ -1,24 +1,35 @@
 const Patient = require('../models/Patient');
 const User = require('../models/User');
 const moment = require('moment');
+const momentTimeZone = require('moment-timezone');
 const cloudinary = require('../middleware/cloudinary');
 const axios = require('axios');
 const Appointment = require('../models/Appointment');
-
+const getTimeZones = function() {
+    return momentTimeZone.tz.names();
+};
 module.exports = {
+
+
     getAppointments: async(req, res) => {
-
-        //const patientItems = await Patient.find({ userId: req.user.id })
-
         const apptItems = await Appointment.find({ _id: req.params.id });
-        //.sort({ createdAt: 'desc' }).lean();
-        res.render("appointments.ejs", { appointments: apptItems });
-
-        // patient: patientItems,
-        // user: req.user
+        const patientItems = await Patient.find({ userId: req.user.id });
+        res.render("appointments.ejs", { appointments: apptItems, patient: patientItems, user: req.user });
 
     },
-
+    createNewAppt: async(req, res) => {
+        res.render('appointments/create', {
+            moment: moment,
+            timeZones: getTimeZones(),
+            appointment: new Appointment({
+                name: '',
+                phoneNumber: '',
+                notification: '',
+                timeZone: '',
+                time: '',
+            }),
+        });
+    },
     bookReminders: async(req, res) => {
         const getTimeZones = function() {
             return momentTimeZone.tz.names();
@@ -36,14 +47,15 @@ module.exports = {
 
             const appointment = await Appointment.create({
                 name: req.body.name,
-                phoneNumber: req.body.doctorName,
+                phoneNumber: req.body.phoneNumber,
+                doctorName: req.body.doctorName,
                 notification: Number(req.body.notification),
                 timeZone: req.body.timeZone,
                 time: time,
             });
             await appointment.save()
             console.log('Appointment has been created!');
-            res.redirect(`book.ejs`)
+            res.redirect(`/`)
 
         } catch (err) {
             console.error(err)
