@@ -41,27 +41,26 @@
                 <div class="collapse navbar-collapse" id="navbarNav"> -->
 
                 <ul class="navbar-nav nav">
-                    <li>
-                        <a href="/appointments">Appointment Home</a>
-                    </li>
-                    <li>
-                        <a href="/appointments/create">New appointment</a></li>
-                    <!-- <li class="nav-item"><a class="nav-link" href="/appointments/bookAppointments">New appointment</a></li> -->
+                    <li><a href="../landings">Home</a> </li>
+                    <li><a href="/appointments">Appointment Home</a> </li>
+                    <li><a href="/appointments/create">New appointment</a></li>
+                    <li><a class="nav-link" href="/logout">Logout</a></li>
                 </ul>
             </div>
+        </div>
     </nav>
-    </div>
+
 
     <h2>Book New Appointment</h2>
 
 
-    <form id=" formAppointment" class="form-horizontal col-lg-5" name="formAppointment " method="POST " action="/appointments " data-parsley-validate=" ">
+    <form id=" formAppointment" class="form-horizontal col-lg-5" name="formAppointment" method="POST" action="/appointments " data-parsley-validate=" ">
 
         <div class="form-group  me-auto mb-2 mb-lg-0">
             <label class="col-sm-6 control-label" for="inputName">Name </label>
 
             <span class="col-sm-6">
-            <input id="inputName" class="form-control" type="text" name="name" placeholder="Name" required=" " data-parsley-maxlength="20 " 
+            <input id="inputName" class="form-control" type="text" name="name" placeholder="Name" required=" " data-parsley-maxlength="20" 
             data-parsley-maxlength-message=" This field can ' t have more than 20 characters" value="<%=appointment.name%>">            
        </span>
         </div>
@@ -109,7 +108,7 @@
             <select id="selecttimeZone" class="form-control" name="timeZone" required="" value="<%=appointment.timeZones%>">
         <% timeZones.forEach(zone=>{%>
             <option name="timeZone" selected="<%=zone%>===<%appointment.timeZones%>" value="<%=zone%>">
-               <%=zone%>
+               <%= zone%>
             </option>
             <%})%>
                 </select>

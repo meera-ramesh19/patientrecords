@@ -5,6 +5,7 @@ const momentTimeZone = require('moment-timezone');
 const cloudinary = require('../middleware/cloudinary');
 const axios = require('axios');
 const Appointment = require('../models/Appointment');
+
 const getTimeZones = function() {
     return momentTimeZone.tz.names();
 };
@@ -13,8 +14,8 @@ module.exports = {
 
     getAppointments: async(req, res) => {
         const apptItems = await Appointment.find({ _id: req.params.id });
-        const patientItems = await Patient.find({ userId: req.user.id });
-        res.render("appointments.ejs", { appointments: apptItems, patient: patientItems, user: req.user });
+         const patientItems = await Patient.find({ userId: req.user.id });
+        res.render("appointments/index.ejs", { appointments: apptItems,patient:patientItems,user: req.user });
 
     },
     createNewAppt: async(req, res) => {
@@ -31,12 +32,12 @@ module.exports = {
         });
     },
     bookReminders: async(req, res) => {
-        const getTimeZones = function() {
-            return momentTimeZone.tz.names();
-        };
+        // const getTimeZones = function() {
+        //     return momentTimeZone.tz.names();
+        // };
         timeZones = getTimeZones();
         try {
-
+            
             // Check if user has provided input for all form fields
             // const name = req.body.name;
             // const doctorName = req.body.doctorName;
@@ -45,7 +46,8 @@ module.exports = {
             // const timeZone = req.body.timeZone;
             const time = moment(req.body.time, 'YYYY-MM-DD hh:mma');
 
-            const appointment = await Appointment.create({
+             const appointment = await new Appointment.create({
+            //    const appointment = await new Appointment({
                 name: req.body.name,
                 phoneNumber: req.body.phoneNumber,
                 doctorName: req.body.doctorName,
@@ -53,10 +55,11 @@ module.exports = {
                 timeZone: req.body.timeZone,
                 time: time,
             });
-            await appointment.save()
+             await appointment.save()
+            // appointment.save() then(function(){
             console.log('Appointment has been created!');
             res.redirect(`/`)
-
+            // });
         } catch (err) {
             console.error(err)
         }
@@ -66,14 +69,13 @@ module.exports = {
     getReminders: async(req, res) => {
         const id = req.params.id;
         try {
-            const appointment = await Appointment.findById(id).populate('user')
-                // .populate('patient')
+            const appointment = await Appointment.findById(id).populate('user').populate('patient')
 
-            res.render('book.ejs', {
+            res.render('appointments/edit', {
                 timeZones: getTimeZones(),
                 appointment: appointment,
                 user: req.user,
-                // patient: req.patient
+                 patient: req.patient
             });
         } catch (err) {
             console.error(err)
