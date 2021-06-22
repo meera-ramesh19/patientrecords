@@ -1,46 +1,133 @@
-<form class="apptform container-overflow-hidden needs-validation" action="'/appointments/' + appointment.id + '/edit'"  id="add-appointments" method=" POST">
+<!-- <!DOCTYPE html>
+<html>
 
-    <div class="form-group ">
-        <label class="col-sm-4 control-label " for="inputName ">Name</label>
-        <div class="col-sm-8 ">
-            <input type="text " name="name " class="form-control " data-parsley-maxlength="20 " value="<%=appointment.name%>" required id="inputName" placeholder="Name">
-        </div>
+<head>
+    <link rel="icon" type="image/png" href="img/favicon.ico">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel='stylesheet' type='text/css' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.14.30/css/bootstrap-datetimepicker.min.css'>
+    <link rel='stylesheet' type='text/css' href='https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css'>
+
+    <!-- Latest compiled and minified CSS-->
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
+<!-- Optional theme-->
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css">
+<title>Appointments</title>
+<style>
+    li {
+        display: inline-block;
+        margin: 0 20px;
+    }
+    
+    .heading {
+        margin: 30px auto;
+    }
+</style>
+</head> -->
+<%- include('../partials/apptheader') -%>
+
+    <body>
+        <%- include('../partials/apptnavbar') -%>
+            <!-- <div class="container"> -->
+            <!-- <nav class="navbar navbar-default">
+        <div class="container">
+
+            <div class="navbar-header"> -->
+            <!-- <div class="container-fluid"> -->
+            <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #e3f2fd;"> -->
+            <!-- <a class="navbar-brand" href="#">Appointment Reminders</a> -->
+            <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> -->
+            <!-- <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav"> -->
+
+            <!-- <ul class="navbar-nav nav">
+        <li><a href="../landings">Home</a> </li>
+        <li><a href="/appointments">Appointment Home</a> </li>
+        <li><a href="/appointments/create">New appointment</a></li>
+        <li><a class="nav-link" href="/logout">Logout</a></li>
+    </ul>
     </div>
-    <div class="form-group">
-        <label class="col-sm-4 control-label" for="inputPhoneNumber">Phone Number</label>
-        <div class="col-sm-8">
-            <input type="number" name="inputPhoneNumber" class="form-control" required id="inputPhoneNumber" placeholder="PhoneNumber" value="<%=appointment.phoneNumber%>" required>
-        </div>
     </div>
-    <div class="form-group">
-        <label class="col-sm-4 control-label" for="time">Appointment Date</label>
-        <div class="col-sm-8">
-            <input type="text" name="time" class="form-control" required id="time" placeholder="Pick a date" value="<%=moment(appointment.time).format('MM-DD-YYYY hh:mma')%>" required>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-4 control-label" for="selectNotification">Notification Time</label>
-        <div class=" col-sm-8">
-            <select type="text" name="notification" class="form-control" required id="selectedDelta" placeholder="Pick a date " value="<%=appointment.notification%>" required>
-          <option selected="<%= appointment.notification===''%>value=''">Select a time</option>
-           <option selected="<%= appointment.notification===''%>value=''">Select a time</option>
-          <option selected="<%= appointment.notification===''%>value='30'">30 minutes</option>
-          <option selected="<%= appointment.notification===''%>value='60'">60 minutes</option>
-          <option selected="<%= appointment.notification===''%>value='90'">90 minutes</option>
-          <option selected="<%= appointment.notification===''%>value='180'">180 minutes</option>
-          <option selected="<%= appointment.notification===''%>value='1day'">Select a time</option>
+    </nav> -->
+
+            <div class="container">
+                <div class="row justify-content-center">
+                    <h2 class="text-center">Book New Appointment</h2>
+                </div>
+            </div>
+            <form class="form-horizontal col-lg-5" id="updateformAppointment" name="updateformAppointment" action='/appointments/<%=appointment.id%>/edit?_method=" PUT "' method="POST ">
+
+                <div class="form-group  me-auto mb-2 mb-lg-0">
+                    <label class="col-sm-6 control-label" for="personName">Name </label>
+
+                    <span class="col-sm-6">
+            <input type="text"  id="personName" class="form-control" name="personName" placeholder="Name" required data-parsley-maxlength="20" value="<%=appointment.personName%>">
+        </span>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-6 control-label" for="phoneNumber">PhoneNumber</label>
+
+                    <span class="col-sm-6">
+                <input id="phoneNumber" class="form-control" type="tel" name="phoneNumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="phoneNumber" required=" "  value="<%=appointment.phoneNumber%>">
+                </span>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-6 control-label" for="doctorName">DoctorName</label>
+
+                    <span class="col-sm-6">
+            <input type="text" id="doctorName" name="doctorName" class="form-control"  placeholder="Doctorname" required="" value="<%=appointment.doctorName%>">
+        </span>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-6 control-label" for="time">Appointment Date</label>
+
+                    <span class="col-sm-6">
+            <input id="inputDate" class="form-control" name="time" type="text" placeholder="Pick a Date" required="" value="<%=moment(appointment.time).format( 'MM-DD-YYYY hh:mma ')%>">
+        </span>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-6 control-label" for="notification">Notification time</label>
+
+                    <span class="col-sm-6">
+            <select id="notification" class="form-control" name="notification" required="" value="<%=appointment.notification%>">
+            <option selected="<%=appointment.notification==' ' %>" value =' '> Select a time</option>
+            <option selected="<%=appointment.notification=='15 ' %>" value ='15 '> 15 Minutes</option>
+            <option selected="<%=appointment.notification=='30 ' %>" value ='30 '> 30 Minutes</option>
+            <option selected="<%=appointment.notification=='45 ' %>" value ='45 '> 45 Minutes</option>
+            <option selected="<%=appointment.notification=='60 ' %>" value ='60 '> 60 Minutes</option>
             </select>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-4 control-label" for="selectTimeZone">Time Zone</label>
-        <div class="col-sm-8">
-            <select type="text" name="timeZone" class="form-control" required id="selectTimeZone" placeholder="Pick a date " value="<%=appointment.timeZone%>" required>
-            <% timeZones.forEach(zone=>{%>
-        <option selected="<%=zone%>===<%=appointment.timeZone%>" value="<%=zone%>" <%=zone%></option>
-           <% })%>
-        </select>
-        </div>
-    </div>
-    <button type="submit" class="btn btn-primary">Save</button>
-</form>
+        </span>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-sm-6 control-label" for="timeZone">TimeZone</label>
+
+                    <span class="col-sm-6">
+            <select id="timeZone" class="form-control" name="timeZone" required="" value="<%=appointment.timeZones%>">
+        <% timeZones.forEach(zone=>{%>
+            <option name="timeZone" selected="<%=zone%>===<%appointment.timeZones%>" value="<%=zone%>">
+               <%= zone%>
+            </option>
+            <%})%>
+                </select>
+            </span>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-6 col-sm-8">
+                        <button class="btn btn-primary" type="submit">Save</button>
+                    </div>
+                </div>
+                <%- include('../partials/footer') -%>
+            </form>
+
+            <script src='https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.min.js '></script>
+            <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js '></script>
+            <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.14.30/js/bootstrap-datetimepicker.min.js '></script>
+            <script src='/js/datetime-picker.js '></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js "></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.1.2/parsley.min.js "></script>
+    </body>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 
 <head>
@@ -8,11 +8,12 @@
     <link rel='stylesheet' type='text/css' href='https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css'>
 
     <!-- Latest compiled and minified CSS-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <!-- Optional theme-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/css/style.css">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
+<!-- Optional theme-->
+<!--
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css">
     <title>Appointments</title>
     <style>
         li {
@@ -24,73 +25,72 @@
             margin: 30px auto;
         }
     </style>
-</head>
+    </head> -->
+<%- include('../partials/apptheader') -%>
 
-<body>
-    <!-- <div class="container"> -->
-    <nav class="navbar navbar-default">
+    <body>
+        <!-- <div class="container"> -->
+        <!-- <nav class="navbar navbar-default">
         <div class="container">
 
-            <div class="navbar-header">
-                <!-- <div class="container-fluid"> -->
-                <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #e3f2fd;"> -->
-                <a class="navbar-brand" href="#">Appointment Reminders</a>
-                <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> -->
-                <!-- <span class="navbar-toggler-icon"></span>
+            <div class="navbar-header">-->
+        <!-- <div class="container-fluid"> -->
+        <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #e3f2fd;"> -->
+        <!-- <a class="navbar-brand" href="#">Appointment Reminders</a> -->
+        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> -->
+        <!-- <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav"> -->
 
-                <ul class="navbar-nav nav">
-                    <li><a href="../landings">Home</a> </li>
-                    <li><a href="/appointments">Appointment Home</a> </li>
-                    <li><a href="/appointments/create">New appointment</a></li>
-                    <li><a class="nav-link" href="/logout">Logout</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+        <!-- <ul class="navbar-nav nav">
+        <li><a href="../landings">Home</a> </li>
+        <li><a href="/appointments">Appointment Home</a> </li>
+        <li><a href="/appointments/create">New appointment</a></li>
+        <li><a class="nav-link" href="/logout">Logout</a></li>
+    </ul>
+    </div>
+    </div>
+    </nav> -->
+        <%- include('../partials/apptnavbar') -%>
+            <h2>Book New Appointment</h2>
 
 
-    <h2>Book New Appointment</h2>
+            <form id="formAppointment" class="form-horizontal col-lg-5" name="formAppointment" method="POST" action="/appointments" data-parsley-validate=" ">
 
+                <div class="form-group  me-auto mb-2 mb-lg-0">
+                    <label class="col-sm-6 control-label" for="personName">Name </label>
 
-    <form id=" formAppointment" class="form-horizontal col-lg-5" name="formAppointment" method="POST" action="/appointments " data-parsley-validate=" ">
-
-        <div class="form-group  me-auto mb-2 mb-lg-0">
-            <label class="col-sm-6 control-label" for="inputName">Name </label>
-
-            <span class="col-sm-6">
-            <input id="inputName" class="form-control" type="text" name="name" placeholder="Name" required=" " data-parsley-maxlength="20" 
-            data-parsley-maxlength-message=" This field can ' t have more than 20 characters" value="<%=appointment.name%>">            
-       </span>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-6 control-label" for="inputPhoneNumber">PhoneNumber</label>
-
-            <span class="col-sm-6">
-                <input id="inputPhoneNumber" class="form-control" type="Number" placeholder="phoneNumber" required=" " data-parsley-maxlength="20" value="<%=appointment.phoneNumber%>">
-                </span>
-        </div>
-
-        <div class="form-group">
-            <label class="col-sm-6 control-label" for="inputDoctorName">DoctorName</label>
-
-            <span class="col-sm-6">
-            <input id="inputDoctorName" name="doctorname" class="form-control" type="text" placeholder="Doctorname" required="" value="<%=appointment.doctorName%>">
+                    <span class="col-sm-6">
+            <input type="text"  id="personName" class="form-control" name="personName" placeholder="Name" required data-parsley-maxlength="20" value="<%=appointment.personName%>">
         </span>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-6 control-label" for="time">Appointment Date</label>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-6 control-label" for="phoneNumber">PhoneNumber</label>
 
-            <span class="col-sm-6">
+                    <span class="col-sm-6">
+                <input id="phoneNumber" class="form-control" type="tel" name="phoneNumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="phoneNumber" required=" "  value="<%=appointment.phoneNumber%>">
+                </span>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-6 control-label" for="doctorName">DoctorName</label>
+
+                    <span class="col-sm-6">
+            <input type="text" id="doctorName" name="doctorName" class="form-control"  placeholder="Doctorname" required="" value="<%=appointment.doctorName%>">
+        </span>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-6 control-label" for="time">Appointment Date</label>
+
+                    <span class="col-sm-6">
             <input id="inputDate" class="form-control" name="time" type="text" placeholder="Pick a Date" required="" value="<%=moment(appointment.time).format( 'MM-DD-YYYY hh:mma ')%>">
         </span>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-6 control-label" for="selectNotification">Notification time</label>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-6 control-label" for="notification">Notification time</label>
 
-            <span class="col-sm-6">
-            <select id="selectDelta" class="form-control" name="notification" required="" value="<%=appointment.notification%>">
+                    <span class="col-sm-6">
+            <select id="notification" class="form-control" name="notification" required="" value="<%=appointment.notification%>">
             <option selected="<%=appointment.notification==' ' %>" value =' '> Select a time</option>
             <option selected="<%=appointment.notification=='15 ' %>" value ='15 '> 15 Minutes</option>
             <option selected="<%=appointment.notification=='30 ' %>" value ='30 '> 30 Minutes</option>
@@ -98,14 +98,14 @@
             <option selected="<%=appointment.notification=='60 ' %>" value ='60 '> 60 Minutes</option>
             </select>
         </span>
-        </div>
+                </div>
 
 
-        <div class="form-group">
-            <label class="col-sm-6 control-label" for="selectTimeZone">TimeZone</label>
+                <div class="form-group">
+                    <label class="col-sm-6 control-label" for="timeZone">TimeZone</label>
 
-            <span class="col-sm-6">
-            <select id="selecttimeZone" class="form-control" name="timeZone" required="" value="<%=appointment.timeZones%>">
+                    <span class="col-sm-6">
+            <select id="timeZone" class="form-control" name="timeZone" required="" value="<%=appointment.timeZones%>">
         <% timeZones.forEach(zone=>{%>
             <option name="timeZone" selected="<%=zone%>===<%appointment.timeZones%>" value="<%=zone%>">
                <%= zone%>
@@ -113,18 +113,18 @@
             <%})%>
                 </select>
             </span>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-6 col-sm-8">
-                <button class="btn btn-default" type="submit">Create</button>
-            </div>
-        </div>
-    </form>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.min.js '></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js '></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.14.30/js/bootstrap-datetimepicker.min.js '></script>
-    <script src='/js/datetime-picker.js '></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js "></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.1.2/parsley.min.js "></script>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-6 col-sm-8">
+                        <button class="btn btn-default" type="submit">Create</button>
+                    </div>
+                </div>
+            </form>
+            <script src='https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.min.js '></script>
+            <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js '></script>
+            <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.14.30/js/bootstrap-datetimepicker.min.js '></script>
+            <script src='/js/datetime-picker.js '></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js "></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.1.2/parsley.min.js "></script>
 
-</body>
+    </body>

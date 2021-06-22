@@ -81,13 +81,13 @@ app.use(flash());
 
 //Setup Routes For Which The Server Is Listening
 app.use("/", mainRoutes);
+app.use("/landings", landingsRoutes);
 app.use("/patients", patientRoutes);
 app.use("/patientsPage", patientPageRoutes);
 app.use("/feed", feedRoutes);
-app.use("/appointmentPage", appointmentPageRoutes);
 app.use("/appointments", appointmentRoutes);
+app.use("/appointmentPage", appointmentPageRoutes);
 app.use("/locationOnMap", locationOnMapRoutes);
-app.use("/landings", landingsRoutes);
 
 
 //start the scheduler

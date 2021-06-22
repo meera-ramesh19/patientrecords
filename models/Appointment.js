@@ -5,28 +5,32 @@ var moment = require('moment');
 var twilio = require('twilio');
 
 const AppointmentSchema = new mongoose.Schema({
-    name: {
-        type: ObjectId,
-        ref: "Patient"
+    personName: {
+        type: String,
+        required: true
     },
     phoneNumber: {
-        type: ObjectId,
-        ref: "Patient"
+
+        type: String,
+        required: true
     },
     doctorName: {
-        type: ObjectId,
-        ref: "Patient"
+
+        type: String,
+        required: true
     },
+
     notification: {
-        type: Number
+        type: Number,
+        required: true
     },
     timeZone: {
-        type: String
+        type: String,
+        required: true
     },
     time: {
-        type: ObjectId,
-        index: true,
-        ref: "Patient"
+        type: Date,
+        index: true
     },
     patient: {
         type: mongoose.Schema.Types.ObjectId,

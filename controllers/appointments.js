@@ -13,9 +13,9 @@ module.exports = {
 
 
     getAppointments: async(req, res) => {
-        const apptItems = await Appointment.find({ _id: req.params.id });
-         const patientItems = await Patient.find({ userId: req.user.id });
-        res.render("appointments/index.ejs", { appointments: apptItems,patient:patientItems,user: req.user });
+        const apptItems = await Appointment.find();
+        // const patientItems = await Patient.find({ userId: req.user.id });
+        res.render("appointments/index", { appointments: apptItems, moment: moment });
 
     },
     createNewAppt: async(req, res) => {
@@ -23,7 +23,7 @@ module.exports = {
             moment: moment,
             timeZones: getTimeZones(),
             appointment: new Appointment({
-                name: '',
+                personnName: '',
                 phoneNumber: '',
                 notification: '',
                 timeZone: '',
@@ -37,29 +37,29 @@ module.exports = {
         // };
         timeZones = getTimeZones();
         try {
-            
-            // Check if user has provided input for all form fields
-            // const name = req.body.name;
-            // const doctorName = req.body.doctorName;
-            // const phoneNumber = req.body.phoneNumber;
-            // const notification = req.body.notification;
-            // const timeZone = req.body.timeZone;
-            const time = moment(req.body.time, 'YYYY-MM-DD hh:mma');
 
-             const appointment = await new Appointment.create({
-            //    const appointment = await new Appointment({
-                name: req.body.name,
-                phoneNumber: req.body.phoneNumber,
-                doctorName: req.body.doctorName,
-                notification: Number(req.body.notification),
-                timeZone: req.body.timeZone,
-                time: time,
+            // Check if user has provided input for all form fields
+            const names = req.body.personName;
+            const doctorNames = req.body.doctorName;
+            const phoneNumbers = req.body.phoneNumber;
+            const notifications = req.body.notification;
+            const timeZones = req.body.timeZone;
+            const times = moment(req.body.time, 'YYYY-MM-DD hh:mma');
+
+            // const appointment = await Appointment.create({
+            const appointment = await new Appointment({
+                personName: names,
+                phoneNumber: phoneNumbers,
+                doctorName: doctorNames,
+                notification: notifications,
+                timeZone: timeZones,
+                time: times,
             });
-             await appointment.save()
-            // appointment.save() then(function(){
+            await appointment.save()
+                // appointment.save() then(function(){
             console.log('Appointment has been created!');
-            res.redirect(`/`)
-            // });
+            res.redirect(`/appointments`)
+                // });
         } catch (err) {
             console.error(err)
         }
@@ -69,14 +69,16 @@ module.exports = {
     getReminders: async(req, res) => {
         const id = req.params.id;
         try {
-            const appointment = await Appointment.findById(id).populate('user').populate('patient')
-
-            res.render('appointments/edit', {
+            const appointment = await Appointment.findById(id)
+            console.log(appointment)
+            res.render('./appointments/edit', {
                 timeZones: getTimeZones(),
                 appointment: appointment,
+                moment: moment,
                 user: req.user,
-                 patient: req.patient
+                patient: req.patient
             });
+
         } catch (err) {
             console.error(err)
         }
@@ -92,13 +94,13 @@ module.exports = {
 
         const id = req.params.id;
         let modifications = {};
-        modifications.name = req.body.name;
+        modifications.personName = req.body.personName;
         modifications.doctorName = req.body.doctorName;
         modifications.phoneNumber = req.body.phoneNumber;
         modifications.notification = req.body.notification;
         modifications.timeZone = req.body.timeZone;
         modifications.time = moment(req.body.time, 'YYYY-MM-DD hh:mma');
-        const names = req.body.name;
+        // const names = req.body.name;
         // const docName = req.body.doctorName;
         // const phNumber = req.body.phoneNumber;
         // const notify = req.body.notification;
@@ -117,7 +119,7 @@ module.exports = {
                 }, { upsert: true, new: true }
 
             );
-            res.redirect('appointments.ejs', { timeZones: getTimeZones(), appointment: appointment });
+            res.redirect('./appointments/edit', { timeZones: getTimeZones(), appointment: appointment });
 
         } catch (err) {
             console.error(err)

@@ -9,12 +9,10 @@ module.exports = {
     getLandingPage: async(req, res) => {
         try {
 
-            const patient = await Patient.find()
-            res.render('landingPage.ejs', {
-                patient: patient,
-                user: req.user,
-                leaflet: false
-            });
+            const patient = await Patient.find({ userId: req.user })
+            console.log(patient)
+            res.render('landingPage.ejs', { patient: patient, user: req.user, leaflet: false });
+
         } catch (err) {
             console.error(err)
         }

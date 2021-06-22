@@ -6,8 +6,6 @@ const { cloudinary } = require('../middleware/cloudinary')
 const moment = require('moment')
 const upload = require("../middleware/multer");
 const axios = require('axios');
-
-
 var $ = require('jQuery');
 
 require("dotenv").config({ path: "./config/.env" });

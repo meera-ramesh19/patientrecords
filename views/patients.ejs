@@ -87,8 +87,9 @@
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
 
-                        <a href="#" class="btn btn-primary  fa fa-edit">Update</a>
-                        <a href="#" class="btn btn-primary fa fa-trash">Delete</a>
+                        <a href="/<%=patient.id%>/update" class="btn btn-primary  fa fa-edit">Update</a>
+                        <form action='/<%= el.id %>/delete?_method="DELETE"' method="POST" class=>
+                            <button class="btn btn-danger fa fa-trash">Delete</button></form>
 
                     </div>
                 </div>
